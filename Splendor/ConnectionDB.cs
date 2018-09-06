@@ -120,7 +120,12 @@ namespace Splendor
         /// </summary>
         private void CreateInsertCards()
         {
-           //TO DO
+            //Create Table
+            string sql = "CREATE TABLE Card (idCard INT PRIMARY AUTOINCREMENT, fkRessource INT, level INT, nbPtPrestige INT, fkPlayer INT)";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+
+
         }
 
     }
