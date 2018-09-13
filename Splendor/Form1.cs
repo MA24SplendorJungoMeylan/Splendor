@@ -34,10 +34,11 @@ namespace Splendor
         private int nbDiamand;
         private int nbSaphir;
 
-        public int aviableRubis = 7;
-        public int aviableSaphir = 7;
-        public int aviableOnyx = 7;
-        public int aviableEmeraude= 7;
+        private int aviableRubis = 7;
+        private int aviableSaphir = 7;
+        private int aviableDiamand = 7;
+        private int aviableOnyx = 7;
+        private int aviableEmeraude= 7;
 
         //id of the player that is playing
         private int currentPlayerId;
@@ -63,11 +64,11 @@ namespace Splendor
         {
             lblGoldCoin.Text = "5";
 
-            lblDiamandCoin.Text = "7";
-            lblEmeraudeCoin.Text = "7" ;
-            lblOnyxCoin.Text = "7";
+            lblDiamandCoin.Text = aviableDiamand.ToString();
+            lblEmeraudeCoin.Text = aviableEmeraude.ToString();
+            lblOnyxCoin.Text = aviableOnyx.ToString();
             lblRubisCoin.Text = aviableRubis.ToString();
-            lblSaphirCoin.Text = "7";
+            lblSaphirCoin.Text = aviableSaphir.ToString();
 
             conn = new ConnectionDB();
 
@@ -240,7 +241,22 @@ namespace Splendor
         /// <param name="e"></param>
         private void lblOnyxCoin_Click(object sender, EventArgs e)
         {
-            
+            if (enableClicLabel)
+            {
+                cmdValidateChoice.Visible = true;
+                lblChoiceOnyx.Visible = true;
+                if (aviableOnyx == 2)
+                {
+                    MessageBox.Show("Il est impossible de retirer plus de pièces");
+                }
+                else
+                {
+                    aviableOnyx--;
+                    nbOnyx++;
+                    lblOnyxCoin.Text = aviableOnyx.ToString();
+                    lblChoiceOnyx.Text = nbOnyx + "\r\n";
+                }
+            }
         }
 
         /// <summary>
@@ -250,8 +266,22 @@ namespace Splendor
         /// <param name="e"></param>
         private void lblEmeraudeCoin_Click(object sender, EventArgs e)
         {
-
-            
+            if (enableClicLabel)
+            {
+                cmdValidateChoice.Visible = true;
+                lblChoiceEmeraude.Visible = true;
+                if (aviableEmeraude == 2)
+                {
+                    MessageBox.Show("Il est impossible de retirer plus de pièces");
+                }
+                else
+                {
+                    aviableEmeraude--;
+                    nbEmeraude++;
+                    lblEmeraudeCoin.Text = aviableEmeraude.ToString();
+                    lblChoiceEmeraude.Text = nbEmeraude + "\r\n";
+                }
+            }
         }
 
         /// <summary>
@@ -261,7 +291,22 @@ namespace Splendor
         /// <param name="e"></param>
         private void lblDiamandCoin_Click(object sender, EventArgs e)
         {
-            
+            if (enableClicLabel)
+            {
+                cmdValidateChoice.Visible = true;
+                lblChoiceDiamand.Visible = true;
+                if (aviableDiamand == 2)
+                {
+                    MessageBox.Show("Il est impossible de retirer plus de pièces");
+                }
+                else
+                {
+                    aviableDiamand--;
+                    nbDiamand++;
+                    lblDiamandCoin.Text = aviableDiamand.ToString();
+                    lblChoiceDiamand.Text = nbDiamand + "\r\n";
+                }
+            }
         }
 
         /// <summary>

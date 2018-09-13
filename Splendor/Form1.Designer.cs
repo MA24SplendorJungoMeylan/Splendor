@@ -87,8 +87,8 @@
             // lblGoldCoin
             // 
             this.lblGoldCoin.AutoSize = true;
-            this.lblGoldCoin.BackColor = System.Drawing.Color.Silver;
-            this.lblGoldCoin.ForeColor = System.Drawing.Color.Yellow;
+            this.lblGoldCoin.BackColor = System.Drawing.Color.Gold;
+            this.lblGoldCoin.ForeColor = System.Drawing.Color.Silver;
             this.lblGoldCoin.Location = new System.Drawing.Point(542, 15);
             this.lblGoldCoin.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblGoldCoin.Name = "lblGoldCoin";
@@ -396,7 +396,8 @@
             // lblPlayerGoldCoin
             // 
             this.lblPlayerGoldCoin.AutoSize = true;
-            this.lblPlayerGoldCoin.ForeColor = System.Drawing.Color.Yellow;
+            this.lblPlayerGoldCoin.BackColor = System.Drawing.Color.Gold;
+            this.lblPlayerGoldCoin.ForeColor = System.Drawing.Color.Silver;
             this.lblPlayerGoldCoin.Location = new System.Drawing.Point(501, 348);
             this.lblPlayerGoldCoin.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblPlayerGoldCoin.Name = "lblPlayerGoldCoin";
