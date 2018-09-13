@@ -14,7 +14,7 @@ namespace Splendor
     /// </summary>
     class ConnectionDB
     {
-        
+
         //connection to the database
         private SQLiteConnection m_dbConnection;
 
@@ -28,7 +28,7 @@ namespace Splendor
             return System.IO.File.Exists(fileName);
         }
 
-     
+
 
         /// <summary>
         /// constructor : creates the connection to the database SQLite
@@ -58,12 +58,20 @@ namespace Splendor
                 CreateInsertRessources();
                 //TO DO
 
+                //Create and insert Cost
+                CreateInsertCost();
+
+                //Create and insert nbCoin
+                CreateInsertNbCoin();
+
+                
+
             }
-            
-           
+
+
         }
 
-       
+
 
 
         /// <summary>
@@ -92,18 +100,18 @@ namespace Splendor
             //do while to go to every record of the card table
             //while (....)
             //{
-                //Get the ressourceid and the number of prestige points
-                //Create a card object
-                
-                //select the cost of the card : look at the cost table (and other)
-                
-                //do while to go to every record of the card table
-                //while (....)
-                //{
-                    //get the nbRessource of the cost
-                //}
-                //push card into the stack
-                
+            //Get the ressourceid and the number of prestige points
+            //Create a card object
+
+            //select the cost of the card : look at the cost table (and other)
+
+            //do while to go to every record of the card table
+            //while (....)
+            //{
+            //get the nbRessource of the cost
+            //}
+            //push card into the stack
+
             //}
             return listCard;
         }
@@ -122,7 +130,7 @@ namespace Splendor
 
 
 
-        
+
         /// <summary>
         /// get the name of the player according to his id
         /// </summary>
@@ -155,7 +163,7 @@ namespace Splendor
             DoSqlRequest("Insert Into Ressource (idRessource, name) values(5, 'Diamant')");
         }
 
-        
+
 
         /// <summary>
         ///  create tables "cards", "cost" and insert data
@@ -163,7 +171,7 @@ namespace Splendor
         private void CreateInsertCards()
         {
             //Create Table
-            DoSqlRequest("CREATE TABLE Card (idCard INTEGER PRIMARY KEY AUTOINCREMENT,fkRessource INT, level INT, nbPtPrestige INT, fkPlayer INT, FOREIGN KEY(fkPlayer) REFERENCES Player(idPlayer))");
+            DoSqlRequest("CREATE TABLE Card (idCard INTEGER PRIMARY KEY AUTOINCREMENT,fkRessource INT, level INT, nbPtPrestige INT, fkPlayer INT,FOREIGN KEY(fkRessource) REFERENCES Ressource(idRessource), FOREIGN KEY(fkPlayer) REFERENCES Player(idPlayer))");
 
             DoSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (2,0,4,3)");
             DoSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (3,0,4,3)");
@@ -267,6 +275,19 @@ namespace Splendor
             DoSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (101, 2,1,1)");
 
 
+
+
+        }
+
+
+        private void CreateInsertNbCoin()
+        {
+            DoSqlRequest("Create Table NbCoin (idNbCoin INTEGER PRIMARY KEY AUTOINCREMENT, fkPlayer INT, fkRessource INT, nbCoin INT, FOREIGN KEY(fkPlayer) References Player(idPlayer), FOREIGN KEY(fkRessource) References Ressources(idRessource))");
+        }
+
+        private void CreateInsertCost()
+        {
+            DoSqlRequest("CREATE TABLE Cost (idCost INTEGER PRIMARY KEY AUTOINCREMENT, fkCard INT, fkRessource INT, nbRessource INT, FOREIGN KEY(fkCard) References Card(idCard), FOREIGN KEY fkRessource References Ressource(idRessource))");
 
 
         }
