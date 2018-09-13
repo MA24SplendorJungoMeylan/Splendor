@@ -109,6 +109,7 @@ namespace Splendor
             lblChoiceSaphir.Visible = false;
             lblChoiceEmeraude.Visible = false;
             cmdValidateChoice.Visible = false;
+            cmdResetChoice.Visible = false;
             cmdNextPlayer.Visible = false;
 
             //we wire the click on all cards to the same event
@@ -194,17 +195,27 @@ namespace Splendor
             if (enableClicLabel)
             {
                 cmdValidateChoice.Visible = true;
+                cmdResetChoice.Visible = true;
                 lblChoiceRubis.Visible = true;
                 if (aviableRubis == 2)
                 {
                     MessageBox.Show("Il est impossible de retirer plus de pièces");
+                    enableClicLabel = true;
                 }
                 else
                 {
-                    aviableRubis--;
-                    nbRubis++;
-                    lblRubisCoin.Text = aviableRubis.ToString();
-                    lblChoiceRubis.Text = nbRubis + "\r\n";
+                    
+                    if (nbRubis == 2)
+                    {
+                        MessageBox.Show("Il est impossible de retirer plus de pièces");
+                    }
+                    else
+                    {
+                        aviableRubis--;
+                        nbRubis++;
+                        lblRubisCoin.Text = aviableRubis.ToString();
+                        lblChoiceRubis.Text = nbRubis + "\r\n";
+                    }
                 }
             }
         }
@@ -219,17 +230,26 @@ namespace Splendor
             if (enableClicLabel)
             {
                 cmdValidateChoice.Visible = true;
+                cmdResetChoice.Visible = true;
                 lblChoiceSaphir.Visible = true;
                 if (aviableSaphir == 2)
                 {
-                    MessageBox.Show("Il est impossible de retirer plus de pièces");
+                    MessageBox.Show("Le stock ne peut pas descendre en dessous de 2");
                 }
                 else
                 {
-                    aviableSaphir--;
-                    nbSaphir++;
-                    lblSaphirCoin.Text = aviableSaphir.ToString();
-                    lblChoiceSaphir.Text = nbSaphir + "\r\n";
+                    
+                    if (nbSaphir == 2)
+                    {
+                        MessageBox.Show("Il est impossible de retirer plus de pièces");
+                    }
+                    else
+                    {
+                        aviableSaphir--;
+                        nbSaphir++;
+                        lblSaphirCoin.Text = aviableSaphir.ToString();
+                        lblChoiceSaphir.Text = nbSaphir + "\r\n";
+                    }
                 }
             }
         }
@@ -244,17 +264,26 @@ namespace Splendor
             if (enableClicLabel)
             {
                 cmdValidateChoice.Visible = true;
+                cmdResetChoice.Visible = true;
                 lblChoiceOnyx.Visible = true;
                 if (aviableOnyx == 2)
                 {
-                    MessageBox.Show("Il est impossible de retirer plus de pièces");
+                    MessageBox.Show("Le stock ne peut pas descendre en dessous de 2");
                 }
                 else
                 {
-                    aviableOnyx--;
-                    nbOnyx++;
-                    lblOnyxCoin.Text = aviableOnyx.ToString();
-                    lblChoiceOnyx.Text = nbOnyx + "\r\n";
+                    
+                    if (nbOnyx == 2)
+                    {
+                        MessageBox.Show("Il est impossible de retirer plus de pièces");
+                    }
+                    else
+                    {
+                        aviableOnyx--;
+                        nbOnyx++;
+                        lblOnyxCoin.Text = aviableOnyx.ToString();
+                        lblChoiceOnyx.Text = nbOnyx + "\r\n";
+                    }
                 }
             }
         }
@@ -269,10 +298,11 @@ namespace Splendor
             if (enableClicLabel)
             {
                 cmdValidateChoice.Visible = true;
+                cmdResetChoice.Visible = true;
                 lblChoiceEmeraude.Visible = true;
                 if (aviableEmeraude == 2)
                 {
-                    MessageBox.Show("Il est impossible de retirer plus de pièces");
+                    MessageBox.Show("Le stock ne peut pas descendre en dessous de 2");
                 }
                 else
                 {
@@ -301,17 +331,25 @@ namespace Splendor
             if (enableClicLabel)
             {
                 cmdValidateChoice.Visible = true;
+                cmdResetChoice.Visible = true;
                 lblChoiceDiamand.Visible = true;
                 if (aviableDiamand == 2)
                 {
-                    MessageBox.Show("Il est impossible de retirer plus de pièces");
+                    MessageBox.Show("Le stock ne peut pas descendre en dessous de 2");
                 }
                 else
                 {
-                    aviableDiamand--;
-                    nbDiamand++;
-                    lblDiamandCoin.Text = aviableDiamand.ToString();
-                    lblChoiceDiamand.Text = nbDiamand + "\r\n";
+                    if (nbDiamand == 2)
+                    {
+                        MessageBox.Show("Il est impossible de retirer plus de pièces");
+                    }
+                    else
+                    {
+                        aviableDiamand--;
+                        nbDiamand++;
+                        lblDiamandCoin.Text = aviableDiamand.ToString();
+                        lblChoiceDiamand.Text = nbDiamand + "\r\n";
+                    }
                 }
             }
         }
@@ -325,6 +363,10 @@ namespace Splendor
         {
             cmdNextPlayer.Visible = true;
             //TO DO Check if card or coins are selected, impossible to do both at the same time
+            if (nbRubis > 1 && nbSaphir > 1)
+            {
+                //LOL
+            }
             
             cmdNextPlayer.Enabled = true;
         }
@@ -336,7 +378,7 @@ namespace Splendor
         /// <param name="e"></param>
         private void cmdInsertPlayer_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("A implémenter");
+            MessageBox.Show("A implémenter !");
         }
 
         /// <summary>
@@ -350,8 +392,40 @@ namespace Splendor
             //TO DO Get the id of the player : in release 0.1 there are only 3 players
             //Reload the data of the player
             //We are not allowed to click on the next button
-            
         }
 
+        private void lblChoiceRubis_Click(object sender, EventArgs e)
+        {
+            //
+        }
+
+        private void cmdResetChoice_Click(object sender, EventArgs e)
+        {
+            nbRubis = 0;
+            nbOnyx = 0;
+            nbEmeraude = 0;
+            nbDiamand = 0;
+            nbSaphir = 0;
+
+            aviableRubis = 7;
+            aviableSaphir = 7;
+            aviableDiamand = 7;
+            aviableOnyx = 7;
+            aviableEmeraude = 7;
+
+            // Reset label
+            lblRubisCoin.Text = aviableRubis.ToString();
+            lblSaphirCoin.Text = aviableSaphir.ToString();
+            lblOnyxCoin.Text = aviableOnyx.ToString();
+            lblEmeraudeCoin.Text = aviableEmeraude.ToString();
+            lblDiamandCoin.Text = aviableDiamand.ToString();
+
+            // label invisible
+            lblChoiceRubis.Visible = false;
+            lblChoiceSaphir.Visible = false;
+            lblChoiceOnyx.Visible = false;
+            lblChoiceEmeraude.Visible = false;
+            lblChoiceDiamand.Visible = false;
+        }
     }
 }
