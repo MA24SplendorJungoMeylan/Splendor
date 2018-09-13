@@ -34,6 +34,11 @@ namespace Splendor
         private int nbDiamand;
         private int nbSaphir;
 
+        public int aviableRubis = 7;
+        public int aviableSaphir = 7;
+        public int aviableOnyx = 7;
+        public int aviableEmeraude= 7;
+
         //id of the player that is playing
         private int currentPlayerId;
         //boolean to enable us to know if the user can click on a coin or a card
@@ -61,7 +66,7 @@ namespace Splendor
             lblDiamandCoin.Text = "7";
             lblEmeraudeCoin.Text = "7" ;
             lblOnyxCoin.Text = "7";
-            lblRubisCoin.Text = "7";
+            lblRubisCoin.Text = aviableRubis.ToString();
             lblSaphirCoin.Text = "7";
 
             conn = new ConnectionDB();
@@ -189,9 +194,17 @@ namespace Splendor
             {
                 cmdValidateChoice.Visible = true;
                 lblChoiceRubis.Visible = true;
-                //TO DO check if possible to choose a coin, update the number of available coin
-                nbRubis++;
-                lblChoiceRubis.Text = nbRubis + "\r\n";
+                if (aviableRubis == 2)
+                {
+                    MessageBox.Show("Il est impossible de retirer plus de pièces");
+                }
+                else
+                {
+                    aviableRubis--;
+                    nbRubis++;
+                    lblRubisCoin.Text = aviableRubis.ToString();
+                    lblChoiceRubis.Text = nbRubis + "\r\n";
+                }
             }
         }
 
@@ -202,7 +215,22 @@ namespace Splendor
         /// <param name="e"></param>
         private void lblSaphirCoin_Click(object sender, EventArgs e)
         {
-            
+            if (enableClicLabel)
+            {
+                cmdValidateChoice.Visible = true;
+                lblChoiceSaphir.Visible = true;
+                if (aviableSaphir == 2)
+                {
+                    MessageBox.Show("Il est impossible de retirer plus de pièces");
+                }
+                else
+                {
+                    aviableSaphir--;
+                    nbSaphir++;
+                    lblSaphirCoin.Text = aviableSaphir.ToString();
+                    lblChoiceSaphir.Text = nbSaphir + "\r\n";
+                }
+            }
         }
 
         /// <summary>
