@@ -276,10 +276,17 @@ namespace Splendor
                 }
                 else
                 {
-                    aviableEmeraude--;
-                    nbEmeraude++;
-                    lblEmeraudeCoin.Text = aviableEmeraude.ToString();
-                    lblChoiceEmeraude.Text = nbEmeraude + "\r\n";
+                    if (nbEmeraude == 2)
+                    {
+                        MessageBox.Show("Il est impossible de retirer plus de pièces");
+                    }
+                    else
+                    {
+                        aviableEmeraude--;
+                        nbEmeraude++;
+                        lblEmeraudeCoin.Text = aviableEmeraude.ToString();
+                        lblChoiceEmeraude.Text = nbEmeraude + "\r\n";
+                    }
                 }
             }
         }
