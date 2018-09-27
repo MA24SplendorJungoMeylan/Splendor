@@ -89,34 +89,47 @@ namespace Splendor
         public Stack<Card> GetListCardAccordingToLevel(int level)
         {
             //Get all the data from card table selecting them according to the data
-            string sql = "select idCard, fkRessource, level, nbPtPrestige from Card order by " + level;
+            string sql = "select idCard, fkRessource, level, nbPtPrestige from Card where level = " + level;
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader cardReader = command.ExecuteReader();
             
+
+
 
             //TO DO
             //Create an object "Stack of Card"
             Stack<Card> listCard = new Stack<Card>();
             //push pop
-            
+
             //do while to go to every record of the card table
             //while (....)
             //{
             //Get the ressourceid and the number of prestige points
             //Create a card object
-            while (cardReader.Read())
-            { 
-                Card card = new Card();
-                card.Ress = (Ressources)cardReader["fkRessource"]-1;
-                card.PrestigePt = (int)cardReader["nbPtPrestige"];
 
-                
+            while (cardReader.Read())
+            {
+
+                Card card = new Card();
+                card.Ress = (Ressources)cardReader["fkRessource"] - 1;
+                card.PrestigePt = (int)cardReader["nbPtPrestige"];
+                card.Level = (int)cardReader["level"];
+                card.IdCard = (int)cardReader["idCard"];
+
+                sql = "select idCost, fkCard, fkRessource, nbRessource from Cost where fkCard = " + card.IdCard;
+                command = new SQLiteCommand(sql, m_dbConnection);
+                SQLiteDataReader CostReader = command.ExecuteReader();
+
+                while (CostReader.Read())
+                {
+                    card.Cout[(int)CostReader["fkRessource"]-1] = (int)CostReader["nbRessource"];
+                }    
             }
-           
+
 
 
             //select the cost of the card : look at the cost table (and other)
-
+           
             //do while to go to every record of the card table
             //while (....)
             //{
@@ -125,6 +138,10 @@ namespace Splendor
             //push card into the stack
 
             //}
+
+    
+
+
             return listCard;
         }
 
@@ -180,20 +197,20 @@ namespace Splendor
         private void CreateInsertCards()
         {
             //Create Table
-            DoSqlRequest("CREATE TABLE Card (idCard INTEGER PRIMARY KEY AUTOINCREMENT,fkRessource INT, level INT, nbPtPrestige INT, fkPlayer INT,FOREIGN KEY(fkRessource) REFERENCES Ressource(idRessource), FOREIGN KEY(fkPlayer) REFERENCES Player(idPlayer))");
+            DoSqlRequest("CREATE TABLE Card (idCard INT PRIMARY KEY ,fkRessource INT, level INT, nbPtPrestige INT, fkPlayer INT,FOREIGN KEY(fkRessource) REFERENCES Ressource(idRessource), FOREIGN KEY(fkPlayer) REFERENCES Player(idPlayer))");
 
             //Insert data to DB
             {
-                DoSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (2,0,4,3)");
-                DoSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (3,0,4,3)");
-                DoSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (4,0,4,3)");
-                DoSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (5,0,4,3)");
-                DoSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (6,0,4,3)");
-                DoSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (7,0,4,3)");
-                DoSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (8,0,4,3)");
-                DoSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (9,0,4,3)");
-                DoSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (10,0,4,3)");
-                DoSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (11,0,4,3)");
+                DoSqlRequest("insert into card(idcard, level, nbPtPrestige) values (2,4,3)");
+                DoSqlRequest("insert into card(idcard, level, nbPtPrestige) values (3,4,3)");
+                DoSqlRequest("insert into card(idcard, level, nbPtPrestige) values (4,4,3)");
+                DoSqlRequest("insert into card(idcard, level, nbPtPrestige) values (5,4,3)");
+                DoSqlRequest("insert into card(idcard, level, nbPtPrestige) values (6,4,3)");
+                DoSqlRequest("insert into card(idcard, level, nbPtPrestige) values (7,4,3)");
+                DoSqlRequest("insert into card(idcard, level, nbPtPrestige) values (8,4,3)");
+                DoSqlRequest("insert into card(idcard, level, nbPtPrestige) values (9,4,3)");
+                DoSqlRequest("insert into card(idcard, level, nbPtPrestige) values (10,4,3)");
+                DoSqlRequest("insert into card(idcard, level, nbPtPrestige) values (11,4,3)");
                 DoSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (12, 4,3,5)");
                 DoSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (13, 3,3,5)");
                 DoSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (14, 2,3,3)");
