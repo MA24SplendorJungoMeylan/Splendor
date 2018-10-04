@@ -29,16 +29,17 @@ namespace Splendor
     {
         //used to store the number of coins selected for the current round of game
         private int nbRubis;
+        private int nbSaphir;
         private int nbOnyx;
         private int nbEmeraude;
         private int nbDiamand;
-        private int nbSaphir;
+        
 
         private int aviableRubis = 7;
         private int aviableSaphir = 7;
-        private int aviableDiamand = 7;
         private int aviableOnyx = 7;
         private int aviableEmeraude= 7;
+        private int aviableDiamand = 7;
 
         //used for the three differents coins
         private int threeCoins = 0;
@@ -67,11 +68,11 @@ namespace Splendor
         {
             lblGoldCoin.Text = "5";
 
-            lblDiamandCoin.Text = aviableDiamand.ToString();
-            lblEmeraudeCoin.Text = aviableEmeraude.ToString();
-            lblOnyxCoin.Text = aviableOnyx.ToString();
             lblRubisCoin.Text = aviableRubis.ToString();
             lblSaphirCoin.Text = aviableSaphir.ToString();
+            lblOnyxCoin.Text = aviableOnyx.ToString();
+            lblEmeraudeCoin.Text = aviableEmeraude.ToString();
+            lblDiamandCoin.Text = aviableDiamand.ToString();
 
             conn = new ConnectionDB();
 
@@ -99,7 +100,6 @@ namespace Splendor
             Stack<Card> listCardTwo = conn.GetListCardAccordingToLevel(2);
             Stack<Card> listCardThree = conn.GetListCardAccordingToLevel(3);
 
-            listCardOne.
 
 
             //Go through the results
@@ -112,11 +112,12 @@ namespace Splendor
 
             enableClicLabel = false;
 
-            lblChoiceDiamand.Visible = false;
-            lblChoiceOnyx.Visible = false;
             lblChoiceRubis.Visible = false;
             lblChoiceSaphir.Visible = false;
+            lblChoiceOnyx.Visible = false;
             lblChoiceEmeraude.Visible = false;
+            lblChoiceDiamand.Visible = false;
+
             cmdValidateChoice.Visible = false;
             cmdResetChoice.Visible = false;
             cmdNextPlayer.Visible = false;
@@ -160,6 +161,7 @@ namespace Splendor
 
             string name = conn.GetPlayerName(currentPlayerId);
 
+
             //no coins or card selected yet, labels are empty
             lblChoiceDiamand.Text = "";
             lblChoiceOnyx.Text = "";
@@ -180,13 +182,13 @@ namespace Splendor
             player.Name = name;
             player.Id = id;
             player.Ressources = new int[] { 2, 0, 1, 1, 1 };
-            player.Coins = new int[] { 0, 1, 0, 1, 1 };
+            player.Coins = new int[] { 0, 1, 0, 1, 1 };//-------------------------------------------------------------------
 
-            lblPlayerDiamandCoin.Text = player.Coins[0].ToString();
-            lblPlayerOnyxCoin.Text = player.Coins[1].ToString();
-            lblPlayerRubisCoin.Text = player.Coins[2].ToString();
-            lblPlayerSaphirCoin.Text = player.Coins[3].ToString();
-            lblPlayerEmeraudeCoin.Text = player.Coins[4].ToString();
+            lblPlayerRubisCoin.Text = player.Coins[0].ToString();
+            lblPlayerSaphirCoin.Text = player.Coins[1].ToString();
+            lblPlayerOnyxCoin.Text = player.Coins[2].ToString();
+            lblPlayerEmeraudeCoin.Text = player.Coins[3].ToString();
+            lblPlayerDiamandCoin.Text = player.Coins[4].ToString();
             currentPlayerId = id;
 
             lblPlayer.Text = "Jeu de " + name;

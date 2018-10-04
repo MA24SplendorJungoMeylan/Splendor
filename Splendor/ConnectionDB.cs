@@ -165,7 +165,7 @@ namespace Splendor
         /// <returns></returns>
         public string GetPlayerName(int id)
         {
-            string sql = "select pseudo from player where id = " + id;
+            string sql = "select pseudo from player where idPlayer = " + id;
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
             string name = "";
@@ -175,6 +175,20 @@ namespace Splendor
                 
             }
             return name;
+        }
+        /// <summary>
+        /// get 
+        /// </summary>
+        public void GetPlayerCoins(int id)
+        {
+            string sql = "select fkRessource, nbCoin from NbCoin where fkPlayer = " + id;
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+            int[] Coins = new int[5];
+            while(reader.Read())
+            {
+                Coins[] = ;
+            }
         }
 
         /// <summary>
