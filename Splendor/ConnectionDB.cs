@@ -165,7 +165,7 @@ namespace Splendor
         /// <returns></returns>
         public string GetPlayerName(int id)
         {
-            string sql = "select pseudo from player where id = " + id;
+            string sql = "select pseudo from player where idPlayer = " + id;
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
             string name = "";

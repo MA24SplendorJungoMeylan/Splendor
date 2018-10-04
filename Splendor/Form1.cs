@@ -79,32 +79,57 @@ namespace Splendor
             //they are not hard coded any more
             //TO DO
 
-            Card card11 = new Card();
-            card11.Level = 1;
-            card11.PrestigePt = 1;
-            card11.Cout = new int[] { 2, 0, 2, 0, 2 };
-            card11.Ress = Ressources.Rubis;
-
-            Card card12 = new Card();
-            card12.Level = 1;
-            card12.PrestigePt = 0;
-            card12.Cout = new int[] { 0, 1, 2, 1, 0 };
-            card12.Ress = Ressources.Saphir;
-
-            txtLevel11.Text = card11.ToString();
-            txtLevel12.Text = card12.ToString();
+       
 
             //load cards from the database
-            Stack<Card> listCardOne = conn.GetListCardAccordingToLevel(1);
-            Stack<Card> listCardTwo = conn.GetListCardAccordingToLevel(2);
-            Stack<Card> listCardThree = conn.GetListCardAccordingToLevel(3);
+            Stack<Card> listCardOne;
+            Stack<Card> listCardTwo;
+            Stack<Card> listCardThree;
 
-            listCardOne.
+            //charge les cartes dans les cases
+            listCardOne = conn.GetListCardAccordingToLevel(1);
+            int nbDataInStack = listCardOne.Count;
+            int i = 0;
+            foreach (Control ctrl in flwCardLevel1.Controls)
+            {
+                if (i < nbDataInStack)
+                {
+                    ctrl.Text = listCardOne.Pop().ToString();
+                    i++;
+                }
+
+            }
+
+            listCardOne = conn.GetListCardAccordingToLevel(2);
+            nbDataInStack = listCardOne.Count;
+            i = 0;
+            foreach (Control ctrl in flwCardLevel2.Controls)
+            {
+                if (i < nbDataInStack)
+                {
+                    ctrl.Text = listCardOne.Pop().ToString();
+                    i++;
+                }
+
+            }
+
+            listCardOne = conn.GetListCardAccordingToLevel(3);
+            nbDataInStack = listCardOne.Count;
+            i = 0;
+            foreach (Control ctrl in flwCardLevel3.Controls)
+            {
+                if (i < nbDataInStack)
+                {
+                    ctrl.Text = listCardOne.Pop().ToString();
+                    i++;
+                }
+
+            }
 
 
             //Go through the results
             //Don't forget to check when you are at the end of the stack
-            
+
             //fin TO DO
 
             this.Width = 680;
@@ -124,6 +149,25 @@ namespace Splendor
             //we wire the click on all cards to the same event
             //TO DO for all cards
             txtLevel11.Click += ClickOnCard;
+            txtLevel12.Click += ClickOnCard;
+            txtLevel13.Click += ClickOnCard;
+            txtLevel14.Click += ClickOnCard;
+
+            txtLevel21.Click += ClickOnCard;
+            txtLevel22.Click += ClickOnCard;
+            txtLevel23.Click += ClickOnCard;
+            txtLevel24.Click += ClickOnCard;
+
+            txtLevel31.Click += ClickOnCard;
+            txtLevel32.Click += ClickOnCard;
+            txtLevel33.Click += ClickOnCard;
+            txtLevel34.Click += ClickOnCard;
+
+            txtNoble1.Click += ClickOnCard;
+            txtNoble2.Click += ClickOnCard;
+            txtNoble3.Click += ClickOnCard;
+            txtNoble4.Click += ClickOnCard;
+           
         }
 
         private void ClickOnCard(object sender, EventArgs e)
@@ -131,6 +175,13 @@ namespace Splendor
             //We get the value on the card and we split it to get all the values we need (number of prestige points and ressource)
             //Enable the button "Validate"
             //TO DO
+            TextBox txtBox = sender as TextBox;
+
+            MessageBox.Show(txtBox.Text);
+           
+           
+
+
         }
 
         /// <summary>
@@ -571,5 +622,8 @@ namespace Splendor
             lblEmeraudeCoin.Enabled = true;
             lblDiamandCoin.Enabled = true;
         }
+
+
+      
     }
 }
