@@ -1,6 +1,6 @@
 ﻿/**
  * \file      frmAddVideoGames.cs
- * \author    F. Andolfatto
+ * \author    Jeremy Jungo, Benoit Meylan
  * \version   1.0
  * \date      August 22. 2018
  * \brief     Form to play.
@@ -73,7 +73,7 @@ namespace Splendor
             Card card11 = new Card();
             card11.Level = 1;
             card11.PrestigePt = 1;
-            card11.Cout = new int[] { 1, 0, 2, 0, 2 };
+            card11.Cout = new int[] { 2, 0, 2, 0, 2 };
             card11.Ress = Ressources.Rubis;
 
             Card card12 = new Card();
