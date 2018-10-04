@@ -87,6 +87,12 @@ namespace Splendor
 
             //load cards from the database
             Stack<Card> listCardOne = conn.GetListCardAccordingToLevel(1);
+            Stack<Card> listCardTwo = conn.GetListCardAccordingToLevel(2);
+            Stack<Card> listCardThree = conn.GetListCardAccordingToLevel(3);
+
+            listCardOne.
+
+
             //Go through the results
             //Don't forget to check when you are at the end of the stack
             

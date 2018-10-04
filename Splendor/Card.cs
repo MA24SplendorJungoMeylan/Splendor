@@ -16,7 +16,7 @@ namespace Splendor
         private int level;
         private int idCard;
         //tableau : l'index correspond à l'énumération, la valeur à la ressource requise
-        private int[] cout = new int[4];
+        private int[] cout = new int[5];
         
 
         /// <summary>

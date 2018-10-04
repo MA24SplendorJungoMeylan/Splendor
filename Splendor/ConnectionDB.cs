@@ -123,7 +123,9 @@ namespace Splendor
                 while (CostReader.Read())
                 {
                     card.Cout[(int)CostReader["fkRessource"]-1] = (int)CostReader["nbRessource"];
-                }    
+                }
+
+                listCard.Push(card);
             }
 
 
