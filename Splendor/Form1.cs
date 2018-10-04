@@ -490,8 +490,13 @@ namespace Splendor
         private void cmdValidateChoice_Click(object sender, EventArgs e)
         {
             //TO DO Check if card or coins are selected, impossible to do both at the same time
-            
-            cmdNextPlayer.Enabled = true;
+            lblPlayerRubisCoin.Text = lblPlayerRubisCoin.Text + nbRubis.ToString();
+            lblPlayerSaphirCoin.Text = lblPlayerSaphirCoin.Text + nbSaphir.ToString();
+            lblPlayerOnyxCoin.Text = lblPlayerOnyxCoin.Text + nbOnyx.ToString();
+
+            //10 coins max player
+
+            cmdNextPlayer.Visible = true;
         }
 
         /// <summary>
