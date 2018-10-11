@@ -182,12 +182,12 @@ namespace Splendor
             player.Name = name;
             player.Id = id;
             player.Ressources = new int[] { 2, 0, 1, 1, 1 };
-            player.Coins = new int[] { 0, 1, 0, 1, 1 };//-------------------------------------------------------------------
+            player.Coins = conn.GetPlayerCoins(id); //Coins player
 
             lblPlayerRubisCoin.Text = player.Coins[0].ToString();
-            lblPlayerSaphirCoin.Text = player.Coins[1].ToString();
+            lblPlayerSaphirCoin.Text = player.Coins[3].ToString();
             lblPlayerOnyxCoin.Text = player.Coins[2].ToString();
-            lblPlayerEmeraudeCoin.Text = player.Coins[3].ToString();
+            lblPlayerEmeraudeCoin.Text = player.Coins[1].ToString();
             lblPlayerDiamandCoin.Text = player.Coins[4].ToString();
             currentPlayerId = id;
 
@@ -497,13 +497,53 @@ namespace Splendor
         /// <param name="e"></param>
         private void cmdValidateChoice_Click(object sender, EventArgs e)
         {
-            //TO DO Check if card or coins are selected, impossible to do both at the same time
-            lblPlayerRubisCoin.Text = lblPlayerRubisCoin.Text + nbRubis.ToString();
-            lblPlayerSaphirCoin.Text = lblPlayerSaphirCoin.Text + nbSaphir.ToString();
-            lblPlayerOnyxCoin.Text = lblPlayerOnyxCoin.Text + nbOnyx.ToString();
+            //pour l'instant l'id du joeur est en dure ATTENTION : Il devra changer quand on peut entrez des joueurs -------------------------------
+            int id = 0;
+
+            //PlayerCoins var for Show and Back to BD
+            int PlayerRubisCoin = 0;
+            int PlayerSaphirCoin = 0;
+            int PlayerOnyxCoin = 0;
+            int PlayerEmeraudeCoin = 0;
+            int PlayerDiamandCoin = 0;
+            //int TotPlayerCoins = 0;
+
+            //Instentiation Player
+            Player player = new Player();
+
+            player.Coins = conn.GetPlayerCoins(id); //take PlayerCoins to BD
+
+            PlayerRubisCoin = player.Coins[0] + nbRubis;
+            PlayerSaphirCoin = player.Coins[3] + nbSaphir;
+            PlayerOnyxCoin = player.Coins[2] + nbOnyx;
+            PlayerEmeraudeCoin = player.Coins[1] + nbEmeraude;
+            PlayerDiamandCoin = player.Coins[4] + nbDiamand;
+
+            //Show PlayerCoins
+            lblPlayerRubisCoin.Text = PlayerRubisCoin.ToString();
+            lblPlayerSaphirCoin.Text = PlayerSaphirCoin.ToString();
+            lblPlayerOnyxCoin.Text = PlayerOnyxCoin.ToString();
+            lblPlayerEmeraudeCoin.Text = PlayerEmeraudeCoin.ToString();
+            lblPlayerDiamandCoin.Text = PlayerDiamandCoin.ToString();
+
+            /*TotPlayerCoins = Convert.ToInt32(lblPlayerRubisCoin.Text) + 9;
 
             //10 coins max player
+            if (TotPlayerCoins == 10)
+            {
+                MessageBox.Show("Impossible de posséder plus de pièces");
+            }
+            else
+            {
+                //Back PlayerCoins to BD ------------------------------------------------------------------------------------------------
+                conn.BackPlayerCoins(id);
 
+                //Next Player
+                cmdNextPlayer.Visible = true;
+            }*/
+
+
+            //Next Player
             cmdNextPlayer.Visible = true;
         }
 
@@ -534,7 +574,11 @@ namespace Splendor
         {
             //Don't used
         }
-
+        /// <summary>
+        /// Reset all variables used for coins
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cmdResetChoice_Click(object sender, EventArgs e)
         {
             nbRubis = 0;

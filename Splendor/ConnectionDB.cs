@@ -177,18 +177,28 @@ namespace Splendor
             return name;
         }
         /// <summary>
-        /// get 
+        /// get the coins of the player by id
         /// </summary>
-        public void GetPlayerCoins(int id)
+        public int[] GetPlayerCoins(int id)
         {
             string sql = "select fkRessource, nbCoin from NbCoin where fkPlayer = " + id;
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
             int[] Coins = new int[5];
-            while(reader.Read())
+            int CoinsPlayer = 0;
+            int RessourcesPlayer = 0;
+
+            while (reader.Read())
             {
-                Coins[] = ;
+                CoinsPlayer = (int)reader["nbCoin"];
+                RessourcesPlayer = (int)reader["fkRessource"];
+                Coins[RessourcesPlayer] = CoinsPlayer; 
             }
+            return Coins;
+        }
+        public void BackPlayerCoins(int id)
+        {
+
         }
 
         /// <summary>
