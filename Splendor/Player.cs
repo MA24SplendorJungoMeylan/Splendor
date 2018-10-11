@@ -16,6 +16,7 @@ namespace Splendor
         private int id;
         private int[] ressources;
         private int[] coins = new int[5];
+        private int ptPrestige;
 
         /// <summary>
         /// name of the player
@@ -74,6 +75,18 @@ namespace Splendor
             set
             {
                 id = value;
+            }
+        }
+
+        public int PtPrestige
+        {
+            get
+            {
+                return ptPrestige;
+            }
+            set
+            {
+                ptPrestige = value;
             }
         }
 

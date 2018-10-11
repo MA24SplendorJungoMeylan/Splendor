@@ -19,6 +19,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
+
 
 namespace Splendor
 {
@@ -49,6 +51,8 @@ namespace Splendor
         private bool enableClicLabel;
         //connection to the database
         private ConnectionDB conn;
+        //list of players
+        private List<Player> Players = new List<Player>();
 
         /// <summary>
         /// constructor
@@ -131,7 +135,6 @@ namespace Splendor
             //Don't forget to check when you are at the end of the stack
 
             //fin TO DO
-
             this.Width = 680;
             this.Height = 540;
 
@@ -178,8 +181,79 @@ namespace Splendor
             TextBox txtBox = sender as TextBox;
 
             MessageBox.Show(txtBox.Text);
-           
-           
+
+
+            int[] coutCarte = new int[5];
+            string[] informations = txtBox.Text.Split('\t');
+            string ressource = informations[0];
+            string ptPrestigeString = informations[1];
+            string coutString = informations[2];
+            
+        string pattern = @"[^0-9a-zA-Z\n]";
+
+            Regex rex = new Regex(pattern);
+
+            string result = rex.Replace(coutString, "");
+
+            string[] couts = result.Split('\n');
+
+            for(int i = 0; i < 5; i++)
+            {
+                string res = couts[i];
+
+                int resLenght = res.Length;
+                string ressType = res.Substring(0, resLenght - 1);
+                int ressQuantity = System.Convert.ToInt32(res.Substring(resLenght - 1));
+
+                switch (ressType)
+                {
+                    case "Rubis":
+                        coutCarte[0] = ressQuantity;
+                        break;
+                    case "Emeraude":
+                        coutCarte[1] = ressQuantity;
+                        break;
+                    case "Onyx":
+                        coutCarte[2] = ressQuantity;
+                        break;
+                    case "Saphir":
+                        coutCarte[3] = ressQuantity;
+                        break;
+                    case "Diamand":
+                        coutCarte[4] = ressQuantity;
+                        break;
+                }
+
+            }
+
+
+
+            switch (ressource)
+            {
+                case "Rubis" :
+                    Players[currentPlayerId - 1].Ressources[0] += 1;
+                    break;
+                case "Emeraude" :
+                    Players[currentPlayerId - 1].Ressources[1] += 1;
+                    break;
+                case "Onyx" :
+                    Players[currentPlayerId - 1].Ressources[2] += 1;
+                    break;
+                case "Saphir" :
+                    Players[currentPlayerId - 1].Ressources[3] += 1;
+                    break;
+                case "Diamand" :
+                    Players[currentPlayerId - 1].Ressources[4] += 1;
+                    break;
+            }
+
+
+            int ptPrestige = System.Convert.ToInt32(ptPrestigeString);
+            if (ptPrestige != 0)
+            {
+                Players[currentPlayerId - 1].PtPrestige += ptPrestige;
+            }
+
 
 
         }
@@ -195,8 +269,12 @@ namespace Splendor
             this.Height = 780;
 
             int id = 0;
-           
-            LoadPlayer(id);
+
+            for (int i = 0; i < 3;i++)
+            {
+                id = i;
+                LoadPlayer(id);
+            }
 
         }
 
@@ -209,7 +287,7 @@ namespace Splendor
 
             enableClicLabel = true;
 
-            string name = conn.GetPlayerName(currentPlayerId);
+            string name = conn.GetPlayerName(id);
 
             //no coins or card selected yet, labels are empty
             lblChoiceDiamand.Text = "";
@@ -238,11 +316,12 @@ namespace Splendor
             lblPlayerRubisCoin.Text = player.Coins[2].ToString();
             lblPlayerSaphirCoin.Text = player.Coins[3].ToString();
             lblPlayerEmeraudeCoin.Text = player.Coins[4].ToString();
-            currentPlayerId = id;
 
             lblPlayer.Text = "Jeu de " + name;
 
             cmdPlay.Enabled = false;
+
+            Players.Add(player);
         }
 
         /// <summary>
@@ -577,6 +656,11 @@ namespace Splendor
             //TO DO Get the id of the player : in release 0.1 there are only 3 players
             //Reload the data of the player
             //We are not allowed to click on the next button
+            currentPlayerId = (currentPlayerId % 3) + 1;
+
+            lblPlayer.Text = "Jeu de " + Players[currentPlayerId - 1].Name;
+            Console.WriteLine("Joueur suivant, id joueur : " + Players[currentPlayerId - 1].Id);
+
         }
 
         private void lblChoiceRubis_Click(object sender, EventArgs e)
