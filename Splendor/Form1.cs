@@ -1,7 +1,7 @@
 ﻿/**
  * \file      frmAddVideoGames.cs
  * \author    Jeremy Jungo, Benoit Meylan
- * \version   1.0
+ * \version   0.1
  * \date      August 22. 2018
  * \brief     Form to play.
  *
@@ -46,7 +46,7 @@ namespace Splendor
         private int threeCoins = 0;
 
         //id of the player that is playing
-        private int currentPlayerId;
+        private int currentPlayerId = 0;
         //boolean to enable us to know if the user can click on a coin or a card
         private bool enableClicLabel;
         //connection to the database
@@ -86,9 +86,9 @@ namespace Splendor
        
 
             //load cards from the database
-            Stack<Card> listCardOne;
-            Stack<Card> listCardTwo;
-            Stack<Card> listCardThree;
+            Stack<Card> listCardOne = new Stack<Card>();
+            Stack<Card> listCardTwo = new Stack<Card>();
+            Stack<Card> listCardThree = new Stack<Card>();
 
             //charge les cartes dans les cases
             listCardOne = conn.GetListCardAccordingToLevel(1);
@@ -173,6 +173,11 @@ namespace Splendor
            
         }
 
+        /// <summary>
+        /// Separates the elements of one card and check if the player can buy the card.  
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ClickOnCard(object sender, EventArgs e)
         {
             //We get the value on the card and we split it to get all the values we need (number of prestige points and ressource)
@@ -183,79 +188,114 @@ namespace Splendor
             MessageBox.Show(txtBox.Text);
 
 
-            int[] coutCarte = new int[5];
-            string[] informations = txtBox.Text.Split('\t');
-            string ressource = informations[0];
-            string ptPrestigeString = informations[1];
-            string coutString = informations[2];
+            int[] coutCarte = new int[5]; //tableau qui répertorie le cout d'une carte
+            bool canBuy = true;
+            string[] informations = txtBox.Text.Split('\t');//information de la carte
+            string ressource = informations[0]; //ressource de la carte
+            string ptPrestigeString = informations[1]; //pt de presstige de la carte
+            string coutString = informations[2]; // cout d'une carte sous forme de string
             
-        string pattern = @"[^0-9a-zA-Z\n]";
+            string pattern = @"[^0-9a-zA-Z\n]";
 
-            Regex rex = new Regex(pattern);
+            Regex rex = new Regex(pattern); //créer un nouveau paterne 
 
-            string result = rex.Replace(coutString, "");
+            string result = rex.Replace(coutString, ""); //remplace toutes les occurence qui ne sont pas dans le paterne
 
-            string[] couts = result.Split('\n');
+            string[] couts = result.Split('\n'); //tableau des couts
 
-            for(int i = 0; i < 5; i++)
+            
+            //décompose le cout d'une carte pour l'inscrire dans un tableau
+            for(int i = 0; i < couts.Length; i++)
             {
                 string res = couts[i];
-
+                int ressQuantity = 0;
                 int resLenght = res.Length;
-                string ressType = res.Substring(0, resLenght - 1);
-                int ressQuantity = System.Convert.ToInt32(res.Substring(resLenght - 1));
+                if(resLenght > 0)
+                {
+                    string ressType = res.Substring(0, resLenght-1);
+                   
+                    ressQuantity = System.Convert.ToInt32(res.Substring(resLenght-1));
+                  
+                    
 
-                switch (ressType)
+                    switch (ressType)
+                    {
+                        case "Rubis":
+                            coutCarte[0] = ressQuantity;
+                            break;
+                        case "Emeraude":
+                            coutCarte[1] = ressQuantity;
+                            break;
+                        case "Onyx":
+                            coutCarte[2] = ressQuantity;
+                            break;
+                        case "Saphir":
+                            coutCarte[3] = ressQuantity;
+                            break;
+                        case "Diamand":
+                            coutCarte[4] = ressQuantity;
+                            break;
+                    }
+                }
+                
+                
+
+            }
+
+            
+            //Est-ce que le joueur à assez de ressource pour acheter la carte
+            for (int i = 0; i < coutCarte.Length; i++)
+            {
+                coutCarte[i] -= Players[currentPlayerId].Ressources[i];
+                coutCarte[i] -= Players[currentPlayerId].Coins[i];
+
+                //le joueur n'a pas assez de ressources pour acheter la carte
+                if(coutCarte[i] > 0)
+                { 
+                    canBuy = false;
+                }
+            }
+
+            //le joueur a assez de ressources
+            if(canBuy)
+            {
+                //retire les coins du joueur 
+                for (int i = 0; i < coutCarte.Length; i++)
+                {
+                    Players[currentPlayerId].Coins[i] -= coutCarte[i] - Players[currentPlayerId].Ressources[i];
+                }
+
+                switch (ressource)
                 {
                     case "Rubis":
-                        coutCarte[0] = ressQuantity;
+                        Players[currentPlayerId].Ressources[0] += 1;
                         break;
                     case "Emeraude":
-                        coutCarte[1] = ressQuantity;
+                        Players[currentPlayerId].Ressources[1] += 1;
                         break;
                     case "Onyx":
-                        coutCarte[2] = ressQuantity;
+                        Players[currentPlayerId].Ressources[2] += 1;
                         break;
                     case "Saphir":
-                        coutCarte[3] = ressQuantity;
+                        Players[currentPlayerId].Ressources[3] += 1;
                         break;
                     case "Diamand":
-                        coutCarte[4] = ressQuantity;
+                        Players[currentPlayerId].Ressources[4] += 1;
                         break;
                 }
 
+                //ajoute les pts de prestige de la carte au joueur
+                int ptPrestige = System.Convert.ToInt32(ptPrestigeString);
+                if (ptPrestige != 0)
+                {
+                    Players[currentPlayerId].PtPrestige += ptPrestige;
+                }
             }
-
-
-
-            switch (ressource)
+            else
             {
-                case "Rubis" :
-                    Players[currentPlayerId - 1].Ressources[0] += 1;
-                    break;
-                case "Emeraude" :
-                    Players[currentPlayerId - 1].Ressources[1] += 1;
-                    break;
-                case "Onyx" :
-                    Players[currentPlayerId - 1].Ressources[2] += 1;
-                    break;
-                case "Saphir" :
-                    Players[currentPlayerId - 1].Ressources[3] += 1;
-                    break;
-                case "Diamand" :
-                    Players[currentPlayerId - 1].Ressources[4] += 1;
-                    break;
+                MessageBox.Show("Vous n'avez pas assez pour cette carte");
             }
-
-
-            int ptPrestige = System.Convert.ToInt32(ptPrestigeString);
-            if (ptPrestige != 0)
-            {
-                Players[currentPlayerId - 1].PtPrestige += ptPrestige;
-            }
-
-
-
+           
         }
 
         /// <summary>
@@ -656,10 +696,10 @@ namespace Splendor
             //TO DO Get the id of the player : in release 0.1 there are only 3 players
             //Reload the data of the player
             //We are not allowed to click on the next button
-            currentPlayerId = (currentPlayerId % 3) + 1;
+            currentPlayerId = (currentPlayerId + 1 % 3) ;
 
-            lblPlayer.Text = "Jeu de " + Players[currentPlayerId - 1].Name;
-            Console.WriteLine("Joueur suivant, id joueur : " + Players[currentPlayerId - 1].Id);
+            lblPlayer.Text = "Jeu de " + Players[currentPlayerId].Name;
+            Console.WriteLine("Joueur suivant, id joueur : " + Players[currentPlayerId].Id);
 
         }
 
