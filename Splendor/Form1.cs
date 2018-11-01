@@ -205,6 +205,7 @@ namespace Splendor
         {
             if (enableClicLabel)
             {
+                //Verifie si le nombre de jetons de chaque sorte font 2
                 if (nbSaphir == 2 || nbOnyx == 2 || nbEmeraude == 2 || nbDiamand == 2)
                 {
                     lblRubisCoin.Enabled = false;
@@ -216,39 +217,48 @@ namespace Splendor
                 }
                 else
                 {
+                    // total de coins pris
                     threeCoins = nbRubis + nbSaphir + nbOnyx + nbEmeraude + nbDiamand;
-                    if (threeCoins == 3)
+                    if (nbRubis == 1 && threeCoins == 2)
                     {
                         lblRubisCoin.Enabled = false;
-                        lblSaphirCoin.Enabled = false;
-                        lblOnyxCoin.Enabled = false;
-                        lblEmeraudeCoin.Enabled = false;
-                        lblDiamandCoin.Enabled = false;
-                        MessageBox.Show("Il est impossible de retirer plus de 3 pierres différentes");
+                        MessageBox.Show("impossible de prendre 1 rubis en plus");
                     }
                     else
                     {
-                        cmdValidateChoice.Visible = true;
-                        cmdResetChoice.Visible = true;
-                        lblChoiceRubis.Visible = true;
-
-                        if (aviableRubis == 2)
+                        if (threeCoins == 3)
                         {
-                            MessageBox.Show("Le stock ne peut pas descendre en dessous de 2");
+                            lblRubisCoin.Enabled = false;
+                            lblSaphirCoin.Enabled = false;
+                            lblOnyxCoin.Enabled = false;
+                            lblEmeraudeCoin.Enabled = false;
+                            lblDiamandCoin.Enabled = false;
+                            MessageBox.Show("Il est impossible de retirer plus de 3 pierres différentes");
                         }
                         else
                         {
+                            cmdValidateChoice.Visible = true;
+                            cmdResetChoice.Visible = true;
+                            lblChoiceRubis.Visible = true;
 
-                            if (nbRubis == 2)
+                            if (aviableRubis == 2)
                             {
-                                MessageBox.Show("Il est impossible de retirer plus de 2 pierres identiques");
+                                MessageBox.Show("Le stock ne peut pas descendre en dessous de 2");
                             }
                             else
                             {
-                                aviableRubis--;
-                                nbRubis++;
-                                lblRubisCoin.Text = aviableRubis.ToString();
-                                lblChoiceRubis.Text = nbRubis + "\r\n";
+
+                                if (nbRubis == 2)
+                                {
+                                    MessageBox.Show("Il est impossible de retirer plus de 2 pierres identiques");
+                                }
+                                else
+                                {
+                                    aviableRubis--;
+                                    nbRubis++;
+                                    lblRubisCoin.Text = aviableRubis.ToString();
+                                    lblChoiceRubis.Text = nbRubis + "\r\n";
+                                }
                             }
                         }
                     }
@@ -276,7 +286,17 @@ namespace Splendor
                 }
                 else
                 {
+                    // total de coins pris
                     threeCoins = nbRubis + nbSaphir + nbOnyx + nbEmeraude + nbDiamand;
+                    if (nbRubis == 1 && threeCoins == 2)
+                    {
+                        lblRubisCoin.Enabled = false;
+                        MessageBox.Show("impossible de prendre 1 rubis en plus");
+                    }
+                    else
+                    {
+
+                    }
                     if (threeCoins == 3)
                     {
                         lblRubisCoin.Enabled = false;
@@ -334,6 +354,7 @@ namespace Splendor
                 }
                 else
                 {
+                    // total de coins pris
                     threeCoins = nbRubis + nbSaphir + nbOnyx + nbEmeraude + nbDiamand;
                     if (threeCoins == 3)
                     {
@@ -393,6 +414,7 @@ namespace Splendor
                 }
                 else
                 {
+                    // total de coins pris
                     threeCoins = nbRubis + nbSaphir + nbOnyx + nbEmeraude + nbDiamand;
                     if (threeCoins == 3)
                     {
@@ -451,7 +473,7 @@ namespace Splendor
                 }
                 else
                 {
-
+                    // total de coins pris 
                     threeCoins = nbRubis + nbSaphir + nbOnyx + nbEmeraude + nbDiamand;
                     if (threeCoins == 3)
                     {
@@ -513,6 +535,7 @@ namespace Splendor
 
             player.Coins = conn.GetPlayerCoins(id); //take PlayerCoins to BD
 
+            //total coins player
             PlayerRubisCoin = player.Coins[0] + nbRubis;
             PlayerSaphirCoin = player.Coins[3] + nbSaphir;
             PlayerOnyxCoin = player.Coins[2] + nbOnyx;
@@ -542,6 +565,8 @@ namespace Splendor
                 cmdNextPlayer.Visible = true;
             }*/
 
+            //Back PlayerCoins to BD ------------------------------------------------------------------------------------------------
+            conn.BackPlayerCoins(id);
 
             //Next Player
             cmdNextPlayer.Visible = true;
