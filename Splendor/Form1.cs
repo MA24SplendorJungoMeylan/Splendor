@@ -769,7 +769,7 @@ namespace Splendor
             //TO DO Get the id of the player : in release 0.1 there are only 3 players
             //Reload the data of the player
             //We are not allowed to click on the next button
-            currentPlayerId = (currentPlayerId + 1 % 3) ;
+            currentPlayerId = ((currentPlayerId + 1) % 3) ;
 
             lblPlayer.Text = "Jeu de " + Players[currentPlayerId].Name;
             Console.WriteLine("Joueur suivant, id joueur : " + Players[currentPlayerId].Id);
