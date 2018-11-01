@@ -1,7 +1,7 @@
 ﻿/**
  * \file      frmAddVideoGames.cs
  * \author    Jeremy Jungo, Benoit Meylan
- * \version   1.0
+ * \version   0.1
  * \date      August 22. 2018
  * \brief     Form to play.
  *
@@ -19,6 +19,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
+
 
 namespace Splendor
 {
@@ -45,11 +47,13 @@ namespace Splendor
         private int threeCoins = 0;
 
         //id of the player that is playing
-        private int currentPlayerId;
+        private int currentPlayerId = 0;
         //boolean to enable us to know if the user can click on a coin or a card
         private bool enableClicLabel;
         //connection to the database
         private ConnectionDB conn;
+        //list of players
+        private List<Player> Players = new List<Player>();
 
         /// <summary>
         /// constructor
@@ -80,33 +84,60 @@ namespace Splendor
             //they are not hard coded any more
             //TO DO
 
-            Card card11 = new Card();
-            card11.Level = 1;
-            card11.PrestigePt = 1;
-            card11.Cout = new int[] { 2, 0, 2, 0, 2 };
-            card11.Ress = Ressources.Rubis;
-
-            Card card12 = new Card();
-            card12.Level = 1;
-            card12.PrestigePt = 0;
-            card12.Cout = new int[] { 0, 1, 2, 1, 0 };
-            card12.Ress = Ressources.Saphir;
-
-            txtLevel11.Text = card11.ToString();
-            txtLevel12.Text = card12.ToString();
+       
 
             //load cards from the database
-            Stack<Card> listCardOne = conn.GetListCardAccordingToLevel(1);
-            Stack<Card> listCardTwo = conn.GetListCardAccordingToLevel(2);
-            Stack<Card> listCardThree = conn.GetListCardAccordingToLevel(3);
+            Stack<Card> listCardOne = new Stack<Card>();
+            Stack<Card> listCardTwo = new Stack<Card>();
+            Stack<Card> listCardThree = new Stack<Card>();
+
+            //charge les cartes dans les cases
+            listCardOne = conn.GetListCardAccordingToLevel(1);
+            int nbDataInStack = listCardOne.Count;
+            int i = 0;
+            foreach (Control ctrl in flwCardLevel1.Controls)
+            {
+                if (i < nbDataInStack)
+                {
+                    ctrl.Text = listCardOne.Pop().ToString();
+                    i++;
+                }
+
+            }
+
+            listCardOne = conn.GetListCardAccordingToLevel(2);
+            nbDataInStack = listCardOne.Count;
+            i = 0;
+            foreach (Control ctrl in flwCardLevel2.Controls)
+            {
+                if (i < nbDataInStack)
+                {
+                    ctrl.Text = listCardOne.Pop().ToString();
+                    i++;
+                }
+
+
+            }
+
+            listCardOne = conn.GetListCardAccordingToLevel(3);
+            nbDataInStack = listCardOne.Count;
+            i = 0;
+            foreach (Control ctrl in flwCardLevel3.Controls)
+            {
+                if (i < nbDataInStack)
+                {
+                    ctrl.Text = listCardOne.Pop().ToString();
+                    i++;
+                }
+
+            }
 
 
 
             //Go through the results
             //Don't forget to check when you are at the end of the stack
-            
-            //fin TO DO
 
+            //fin TO DO
             this.Width = 680;
             this.Height = 540;
 
@@ -125,13 +156,150 @@ namespace Splendor
             //we wire the click on all cards to the same event
             //TO DO for all cards
             txtLevel11.Click += ClickOnCard;
+            txtLevel12.Click += ClickOnCard;
+            txtLevel13.Click += ClickOnCard;
+            txtLevel14.Click += ClickOnCard;
+
+            txtLevel21.Click += ClickOnCard;
+            txtLevel22.Click += ClickOnCard;
+            txtLevel23.Click += ClickOnCard;
+            txtLevel24.Click += ClickOnCard;
+
+            txtLevel31.Click += ClickOnCard;
+            txtLevel32.Click += ClickOnCard;
+            txtLevel33.Click += ClickOnCard;
+            txtLevel34.Click += ClickOnCard;
+
+            txtNoble1.Click += ClickOnCard;
+            txtNoble2.Click += ClickOnCard;
+            txtNoble3.Click += ClickOnCard;
+            txtNoble4.Click += ClickOnCard;
+           
         }
 
+        /// <summary>
+        /// Separates the elements of one card and check if the player can buy the card.  
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ClickOnCard(object sender, EventArgs e)
         {
             //We get the value on the card and we split it to get all the values we need (number of prestige points and ressource)
             //Enable the button "Validate"
             //TO DO
+            TextBox txtBox = sender as TextBox;
+
+            MessageBox.Show(txtBox.Text);
+
+
+            int[] coutCarte = new int[5]; //tableau qui répertorie le cout d'une carte
+            bool canBuy = true;
+            string[] informations = txtBox.Text.Split('\t');//information de la carte
+            string ressource = informations[0]; //ressource de la carte
+            string ptPrestigeString = informations[1]; //pt de presstige de la carte
+            string coutString = informations[2]; // cout d'une carte sous forme de string
+            
+            string pattern = @"[^0-9a-zA-Z\n]";
+
+            Regex rex = new Regex(pattern); //créer un nouveau paterne 
+
+            string result = rex.Replace(coutString, ""); //remplace toutes les occurence qui ne sont pas dans le paterne
+
+            string[] couts = result.Split('\n'); //tableau des couts
+
+            
+            //décompose le cout d'une carte pour l'inscrire dans un tableau
+            for(int i = 0; i < couts.Length; i++)
+            {
+                string res = couts[i];
+                int ressQuantity = 0;
+                int resLenght = res.Length;
+                if(resLenght > 0)
+                {
+                    string ressType = res.Substring(0, resLenght-1);
+                   
+                    ressQuantity = System.Convert.ToInt32(res.Substring(resLenght-1));
+                  
+                    
+
+                    switch (ressType)
+                    {
+                        case "Rubis":
+                            coutCarte[0] = ressQuantity;
+                            break;
+                        case "Emeraude":
+                            coutCarte[1] = ressQuantity;
+                            break;
+                        case "Onyx":
+                            coutCarte[2] = ressQuantity;
+                            break;
+                        case "Saphir":
+                            coutCarte[3] = ressQuantity;
+                            break;
+                        case "Diamand":
+                            coutCarte[4] = ressQuantity;
+                            break;
+                    }
+                }
+                
+                
+
+            }
+
+            
+            //Est-ce que le joueur à assez de ressource pour acheter la carte
+            for (int i = 0; i < coutCarte.Length; i++)
+            {
+                coutCarte[i] -= Players[currentPlayerId].Ressources[i];
+                coutCarte[i] -= Players[currentPlayerId].Coins[i];
+
+                //le joueur n'a pas assez de ressources pour acheter la carte
+                if(coutCarte[i] > 0)
+                { 
+                    canBuy = false;
+                }
+            }
+
+            //le joueur a assez de ressources
+            if(canBuy)
+            {
+                //retire les coins du joueur 
+                for (int i = 0; i < coutCarte.Length; i++)
+                {
+                    Players[currentPlayerId].Coins[i] -= coutCarte[i] - Players[currentPlayerId].Ressources[i];
+                }
+
+                switch (ressource)
+                {
+                    case "Rubis":
+                        Players[currentPlayerId].Ressources[0] += 1;
+                        break;
+                    case "Emeraude":
+                        Players[currentPlayerId].Ressources[1] += 1;
+                        break;
+                    case "Onyx":
+                        Players[currentPlayerId].Ressources[2] += 1;
+                        break;
+                    case "Saphir":
+                        Players[currentPlayerId].Ressources[3] += 1;
+                        break;
+                    case "Diamand":
+                        Players[currentPlayerId].Ressources[4] += 1;
+                        break;
+                }
+
+                //ajoute les pts de prestige de la carte au joueur
+                int ptPrestige = System.Convert.ToInt32(ptPrestigeString);
+                if (ptPrestige != 0)
+                {
+                    Players[currentPlayerId].PtPrestige += ptPrestige;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Vous n'avez pas assez pour cette carte");
+            }
+           
         }
 
         /// <summary>
@@ -145,8 +313,12 @@ namespace Splendor
             this.Height = 780;
 
             int id = 0;
-           
-            LoadPlayer(id);
+
+            for (int i = 0; i < 3;i++)
+            {
+                id = i;
+                LoadPlayer(id);
+            }
 
         }
 
@@ -159,7 +331,7 @@ namespace Splendor
 
             enableClicLabel = true;
 
-            string name = conn.GetPlayerName(currentPlayerId);
+            string name = conn.GetPlayerName(id);
 
 
             //no coins or card selected yet, labels are empty
@@ -186,14 +358,18 @@ namespace Splendor
 
             lblPlayerRubisCoin.Text = player.Coins[0].ToString();
             lblPlayerSaphirCoin.Text = player.Coins[3].ToString();
+
             lblPlayerOnyxCoin.Text = player.Coins[2].ToString();
             lblPlayerEmeraudeCoin.Text = player.Coins[1].ToString();
             lblPlayerDiamandCoin.Text = player.Coins[4].ToString();
             currentPlayerId = id;
 
+
             lblPlayer.Text = "Jeu de " + name;
 
             cmdPlay.Enabled = false;
+
+            Players.Add(player);
         }
 
         /// <summary>
@@ -593,6 +769,11 @@ namespace Splendor
             //TO DO Get the id of the player : in release 0.1 there are only 3 players
             //Reload the data of the player
             //We are not allowed to click on the next button
+            currentPlayerId = (currentPlayerId + 1 % 3) ;
+
+            lblPlayer.Text = "Jeu de " + Players[currentPlayerId].Name;
+            Console.WriteLine("Joueur suivant, id joueur : " + Players[currentPlayerId].Id);
+
         }
 
         private void lblChoiceRubis_Click(object sender, EventArgs e)
@@ -642,5 +823,8 @@ namespace Splendor
             lblEmeraudeCoin.Enabled = true;
             lblDiamandCoin.Enabled = true;
         }
+
+
+      
     }
 }
