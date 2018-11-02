@@ -663,7 +663,8 @@ namespace Splendor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cmdValidateChoice_Click(object sender, EventArgs e)
+        private void 
+            Choice_Click(object sender, EventArgs e)
         {
             //TO DO Check if card or coins are selected, impossible to do both at the same time
             lblPlayerRubisCoin.Text = lblPlayerRubisCoin.Text + nbRubis.ToString();
