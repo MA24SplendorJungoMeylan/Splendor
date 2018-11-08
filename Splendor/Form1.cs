@@ -349,13 +349,13 @@ namespace Splendor
             player.Name = name;
             player.Id = id;
             player.Ressources = new int[] { 2, 0, 1, 1, 1 };
-            player.Coins = new int[] { 0, 1, 0, 1, 1 };
+            player.Coins = conn.GetPlayerCoins(id); //Coins player
 
-            lblPlayerDiamandCoin.Text = player.Coins[0].ToString();
-            lblPlayerOnyxCoin.Text = player.Coins[1].ToString();
-            lblPlayerRubisCoin.Text = player.Coins[2].ToString();
+            lblPlayerDiamandCoin.Text = player.Coins[4].ToString();
+            lblPlayerOnyxCoin.Text = player.Coins[2].ToString();
+            lblPlayerRubisCoin.Text = player.Coins[0].ToString();
             lblPlayerSaphirCoin.Text = player.Coins[3].ToString();
-            lblPlayerEmeraudeCoin.Text = player.Coins[4].ToString();
+            lblPlayerEmeraudeCoin.Text = player.Coins[1].ToString();
 
             lblPlayer.Text = "Jeu de " + name;
 
@@ -385,38 +385,45 @@ namespace Splendor
                 else
                 {
                     threeCoins = nbRubis + nbSaphir + nbOnyx + nbEmeraude + nbDiamand;
-                    if (threeCoins == 3)
+                    if (nbRubis == 1 && threeCoins == 2)
                     {
                         lblRubisCoin.Enabled = false;
-                        lblSaphirCoin.Enabled = false;
-                        lblOnyxCoin.Enabled = false;
-                        lblEmeraudeCoin.Enabled = false;
-                        lblDiamandCoin.Enabled = false;
-                        MessageBox.Show("Il est impossible de retirer plus de 3 pierres différentes");
+                        MessageBox.Show("impossible de prendre 1 rubis en plus");
                     }
                     else
                     {
-                        cmdValidateChoice.Visible = true;
-                        cmdResetChoice.Visible = true;
-                        lblChoiceRubis.Visible = true;
 
-                        if (aviableRubis == 2)
+                        if (threeCoins == 3)
                         {
-                            MessageBox.Show("Le stock ne peut pas descendre en dessous de 2");
+                            lblRubisCoin.Enabled = false;
+                            lblSaphirCoin.Enabled = false;
+                            lblOnyxCoin.Enabled = false;
+                            lblEmeraudeCoin.Enabled = false;
+                            lblDiamandCoin.Enabled = false;
+                            MessageBox.Show("Il est impossible de retirer plus de 3 pierres différentes");
                         }
                         else
                         {
-
-                            if (nbRubis == 2)
+                            cmdValidateChoice.Visible = true;
+                            cmdResetChoice.Visible = true;
+                            lblChoiceRubis.Visible = true;
+                            if (aviableRubis == 2)
                             {
-                                MessageBox.Show("Il est impossible de retirer plus de 2 pierres identiques");
+                                MessageBox.Show("Le stock ne peut pas descendre en dessous de 2");
                             }
                             else
                             {
-                                aviableRubis--;
-                                nbRubis++;
-                                lblRubisCoin.Text = aviableRubis.ToString();
-                                lblChoiceRubis.Text = nbRubis + "\r\n";
+                                if (nbRubis == 2)
+                                {
+                                    MessageBox.Show("Il est impossible de retirer plus de 2 pierres identiques");
+                                }
+                                else
+                                {
+                                    aviableRubis--;
+                                    nbRubis++;
+                                    lblRubisCoin.Text = aviableRubis.ToString();
+                                    lblChoiceRubis.Text = nbRubis + "\r\n";
+                                }
                             }
                         }
                     }
@@ -445,39 +452,48 @@ namespace Splendor
                 else
                 {
                     threeCoins = nbRubis + nbSaphir + nbOnyx + nbEmeraude + nbDiamand;
-                    if (threeCoins == 3)
+                    if (nbRubis == 1 && threeCoins == 2)
                     {
                         lblRubisCoin.Enabled = false;
-                        lblSaphirCoin.Enabled = false;
-                        lblOnyxCoin.Enabled = false;
-                        lblEmeraudeCoin.Enabled = false;
-                        lblDiamandCoin.Enabled = false;
-                        MessageBox.Show("On peut retirer seulement 3 pierres différentes");
+                        MessageBox.Show("impossible de prendre 1 rubis en plus");
                     }
                     else
                     {
-                        cmdValidateChoice.Visible = true;
-                        cmdResetChoice.Visible = true;
-                        lblChoiceSaphir.Visible = true;
-                        if (aviableSaphir == 2)
+                        if (threeCoins == 3)
                         {
-                            MessageBox.Show("Le stock ne peut pas descendre en dessous de 2");
+                            lblRubisCoin.Enabled = false;
+                            lblSaphirCoin.Enabled = false;
+                            lblOnyxCoin.Enabled = false;
+                            lblEmeraudeCoin.Enabled = false;
+                            lblDiamandCoin.Enabled = false;
+                            MessageBox.Show("On peut retirer seulement 3 pierres différentes");
                         }
                         else
                         {
-                            if (nbSaphir == 2)
+                            cmdValidateChoice.Visible = true;
+                            cmdResetChoice.Visible = true;
+                            lblChoiceSaphir.Visible = true;
+                            if (aviableSaphir == 2)
                             {
-                                MessageBox.Show("Il est impossible de retirer plus de 2 pierres identiques");
+                                MessageBox.Show("Le stock ne peut pas descendre en dessous de 2");
                             }
                             else
                             {
-                                aviableSaphir--;
-                                nbSaphir++;
-                                lblSaphirCoin.Text = aviableSaphir.ToString();
-                                lblChoiceSaphir.Text = nbSaphir + "\r\n";
+                                if (nbSaphir == 2)
+                                {
+                                    MessageBox.Show("Il est impossible de retirer plus de 2 pierres identiques");
+                                }
+                                else
+                                {
+                                    aviableSaphir--;
+                                    nbSaphir++;
+                                    lblSaphirCoin.Text = aviableSaphir.ToString();
+                                    lblChoiceSaphir.Text = nbSaphir + "\r\n";
+                                }
                             }
                         }
                     }
+                    
                 }
             }
         }
@@ -663,14 +679,48 @@ namespace Splendor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void 
-            Choice_Click(object sender, EventArgs e)
+        private void cmdValidateChoice_Click(object sender, EventArgs e)
         {
-            //TO DO Check if card or coins are selected, impossible to do both at the same time
-            lblPlayerRubisCoin.Text = lblPlayerRubisCoin.Text + nbRubis.ToString();
-            lblPlayerSaphirCoin.Text = lblPlayerSaphirCoin.Text + nbSaphir.ToString();
-            lblPlayerOnyxCoin.Text = lblPlayerOnyxCoin.Text + nbOnyx.ToString();
+            //PlayerCoins var for Show and Back to BD
+            int PlayerRubisCoin = 0;
+            int PlayerSaphirCoin = 0;
+            int PlayerOnyxCoin = 0;
+            int PlayerEmeraudeCoin = 0;
+            int PlayerDiamandCoin = 0;
 
+            //int TotPlayerCoins = 0;
+            //Instentiation Player
+
+            Players[currentPlayerId].Coins = conn.GetPlayerCoins(currentPlayerId); //take PlayerCoins to BD
+            PlayerRubisCoin = Players[currentPlayerId].Coins[0] + nbRubis;
+            PlayerSaphirCoin = Players[currentPlayerId].Coins[3] + nbSaphir;
+            PlayerOnyxCoin = Players[currentPlayerId].Coins[2] + nbOnyx;
+            PlayerEmeraudeCoin = Players[currentPlayerId].Coins[1] + nbEmeraude;
+            PlayerDiamandCoin = Players[currentPlayerId].Coins[4] + nbDiamand;
+
+            int[] playerCoins = { PlayerRubisCoin, PlayerEmeraudeCoin, PlayerOnyxCoin, PlayerSaphirCoin, PlayerDiamandCoin };
+
+            Players[currentPlayerId].Coins = playerCoins;
+
+            //Show PlayerCoins
+            lblPlayerRubisCoin.Text = Players[currentPlayerId].Coins[0].ToString();
+            lblPlayerSaphirCoin.Text = Players[currentPlayerId].Coins[3].ToString();
+            lblPlayerOnyxCoin.Text = Players[currentPlayerId].Coins[2].ToString();
+            lblPlayerEmeraudeCoin.Text = Players[currentPlayerId].Coins[1].ToString();
+            lblPlayerDiamandCoin.Text = Players[currentPlayerId].Coins[4].ToString();
+            /*TotPlayerCoins = Convert.ToInt32(lblPlayerRubisCoin.Text) + 9;
+            //10 coins max player
+           if (TotPlayerCoins == 10)
+           {
+               MessageBox.Show("Impossible de posséder plus de pièces");
+           }
+           else
+           {
+               //Back PlayerCoins to BD ------------------------------------------------------------------------------------------------
+               conn.BackPlayerCoins(id);
+                //Next Player
+               cmdNextPlayer.Visible = true;
+           }*/
             //10 coins max player
 
             cmdNextPlayer.Visible = true;
@@ -697,10 +747,18 @@ namespace Splendor
             //TO DO Get the id of the player : in release 0.1 there are only 3 players
             //Reload the data of the player
             //We are not allowed to click on the next button
-            currentPlayerId = (currentPlayerId + 1 % 3) ;
+            currentPlayerId = ((currentPlayerId + 1) % 3) ;
 
             lblPlayer.Text = "Jeu de " + Players[currentPlayerId].Name;
             Console.WriteLine("Joueur suivant, id joueur : " + Players[currentPlayerId].Id);
+
+            //Show PlayerCoins
+            lblPlayerRubisCoin.Text = Players[currentPlayerId].Coins[0].ToString();
+            lblPlayerSaphirCoin.Text = Players[currentPlayerId].Coins[3].ToString();
+            lblPlayerOnyxCoin.Text = Players[currentPlayerId].Coins[2].ToString();
+            lblPlayerEmeraudeCoin.Text = Players[currentPlayerId].Coins[1].ToString();
+            lblPlayerDiamandCoin.Text = Players[currentPlayerId].Coins[4].ToString();
+
 
         }
 
@@ -747,6 +805,9 @@ namespace Splendor
             lblEmeraudeCoin.Enabled = true;
             lblDiamandCoin.Enabled = true;
         }
+
+
+        
 
 
       
