@@ -191,12 +191,12 @@ namespace Splendor
             {
                 CoinsPlayer = (int)CoinReader["nbCoin"];
                 RessourcesPlayer = (int)CoinReader["fkRessource"];
-                Coins[RessourcesPlayer] = CoinsPlayer; 
+                Coins[RessourcesPlayer-1] += CoinsPlayer;                   
             }
             return Coins;
         }
         /// <summary>
-        /// Give the coins of the player by id
+        /// Return to a table the coins off the player by current player id
         /// </summary>
         public void BackPlayerCoins(int id)
         {
@@ -204,6 +204,8 @@ namespace Splendor
             //string sql = "Insert Into NbCoin (fkRessource, nbCoin) where fkPlayer = " + id;
             //SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             //SQLiteDataReader CoinReader = command.ExecuteReader();
+
+
         }
 
         /// <summary>
