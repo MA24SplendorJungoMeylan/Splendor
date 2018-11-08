@@ -316,6 +316,13 @@ namespace Splendor
                 LoadPlayer(id);
             }
 
+            //Display the coins of player
+            lblPlayerDiamandCoin.Text = Players[currentPlayerId].Coins[4].ToString();
+            lblPlayerOnyxCoin.Text = Players[currentPlayerId].Coins[2].ToString();
+            lblPlayerRubisCoin.Text = Players[currentPlayerId].Coins[0].ToString();
+            lblPlayerSaphirCoin.Text = Players[currentPlayerId].Coins[3].ToString();
+            lblPlayerEmeraudeCoin.Text = Players[currentPlayerId].Coins[1].ToString();
+
         }
 
 
@@ -349,13 +356,7 @@ namespace Splendor
             player.Name = name;
             player.Id = id;
             player.Ressources = new int[] { 2, 0, 1, 1, 1 };
-            player.Coins = conn.GetPlayerCoins(id); //Coins player
-
-            lblPlayerDiamandCoin.Text = player.Coins[4].ToString();
-            lblPlayerOnyxCoin.Text = player.Coins[2].ToString();
-            lblPlayerRubisCoin.Text = player.Coins[0].ToString();
-            lblPlayerSaphirCoin.Text = player.Coins[3].ToString();
-            lblPlayerEmeraudeCoin.Text = player.Coins[1].ToString();
+            player.Coins = conn.GetPlayerCoins(id); //Coins player 
 
             lblPlayer.Text = "Jeu de " + name;
 
