@@ -96,7 +96,7 @@ namespace Splendor
 
 
 
-            //TO DO
+            
             //Create an object "Stack of Card"
             Stack<Card> listCard = new Stack<Card>();
             //push pop
@@ -106,7 +106,6 @@ namespace Splendor
             //{
             //Get the ressourceid and the number of prestige points
             //Create a card object
-
             while (cardReader.Read())
             {
 
@@ -195,9 +194,17 @@ namespace Splendor
 
             while (reader.Read())
             { 
-                CoinsPlayer = (int)reader["nbCoin"];
-                RessourcesPlayer = (int)reader["fkRessource"];
-                Coins[RessourcesPlayer-1] += CoinsPlayer;                   
+                try
+                {
+                    CoinsPlayer = (int)reader["nbCoin"];
+                    RessourcesPlayer = (int)reader["fkRessource"];
+                    Coins[RessourcesPlayer - 1] += CoinsPlayer;
+                }
+                catch
+                {
+                    throw new IndexOutOfRangeException("index en dehors des limites");
+                }
+                                   
             }
 
             return Coins;

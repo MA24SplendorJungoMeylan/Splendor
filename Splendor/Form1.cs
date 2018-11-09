@@ -689,17 +689,25 @@ namespace Splendor
             int PlayerEmeraudeCoin = 0;
             int PlayerDiamandCoin = 0;
 
-            //int TotPlayerCoins = 0;
-            //Instentiation Player
+            int[] nbCoins = { nbRubis, nbEmeraude, nbOnyx, nbSaphir, nbDiamand };
 
             Players[currentPlayerId].Coins = conn.GetPlayerCoins(currentPlayerId); //take PlayerCoins to BD
-            PlayerRubisCoin = Players[currentPlayerId].Coins[0] + nbRubis;
-            PlayerSaphirCoin = Players[currentPlayerId].Coins[3] + nbSaphir;
-            PlayerOnyxCoin = Players[currentPlayerId].Coins[2] + nbOnyx;
-            PlayerEmeraudeCoin = Players[currentPlayerId].Coins[1] + nbEmeraude;
-            PlayerDiamandCoin = Players[currentPlayerId].Coins[4] + nbDiamand;
+            PlayerRubisCoin = Players[currentPlayerId].Coins[0] + nbCoins[0];
+            PlayerEmeraudeCoin = Players[currentPlayerId].Coins[1] + nbCoins[1];
+            PlayerOnyxCoin = Players[currentPlayerId].Coins[2] + nbCoins[2];
+            PlayerSaphirCoin = Players[currentPlayerId].Coins[3] + nbCoins[3];
+            PlayerDiamandCoin = Players[currentPlayerId].Coins[4] + nbCoins[4];
 
             int[] playerCoins = { PlayerRubisCoin, PlayerEmeraudeCoin, PlayerOnyxCoin, PlayerSaphirCoin, PlayerDiamandCoin };
+            
+            //add 
+            for(int i = 0; i < playerCoins.Length; i++)
+            {
+                if(nbCoins[i] > 0)
+                {
+                    conn.BackPlayerCoins(currentPlayerId, i, nbCoins[i]);
+                }    
+            }
 
             Players[currentPlayerId].Coins = playerCoins;
 
