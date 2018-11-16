@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace Splendor
 {
-
     /// <summary>
     /// class Player : attributes and methods to deal with a player
     /// </summary>
@@ -18,6 +17,9 @@ namespace Splendor
         private int[] coins = {0,0,0,0,0};
         private int ptPrestige;
 
+        /// <summary>
+        /// Point prestige of the player
+        /// </summary>
         public int PtPrestige
         {
             get
@@ -89,7 +91,5 @@ namespace Splendor
                 id = value;
             }
         }
-
-
     }
 }
