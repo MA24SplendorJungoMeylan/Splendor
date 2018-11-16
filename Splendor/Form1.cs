@@ -169,9 +169,9 @@ namespace Splendor
         }
 
         /// <summary>
-        /// Separates the elements of one card and check if the player can buy the card.  
+        /// Separates the elements of one card and check if the player can buy the card. 
         /// </summary>
-        /// <param name="sender"></param>
+        /// <param name="sender"> textbox of the card</param>
         /// <param name="e"></param>
         private void ClickOnCard(object sender, EventArgs e)
         {
@@ -323,7 +323,7 @@ namespace Splendor
       
 
         /// <summary>
-        /// click on the play button
+        /// the player click on the "Play" button and start the game
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -447,6 +447,13 @@ namespace Splendor
             }
         }
 
+        /// <summary>
+        /// Check if the player can take an other coins
+        /// </summary>
+        /// <param name="NbCoins">nb coins selected by the player </param>
+        /// <param name="availableStone">nb of coins are already available</param>
+        /// <param name="lblstone">label of a ressource</param>
+        /// <param name="lblChoice"></param>
         public void lblClick(ref int NbCoins, ref int availableStone,ref Label lblstone, ref Label lblChoice)
         {
             
@@ -570,7 +577,7 @@ namespace Splendor
         }
 
         /// <summary>
-        /// click on the next player to tell him it is his turn
+        /// Pass to the next player show his inventory and his cards
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -598,6 +605,9 @@ namespace Splendor
             lblChoice();
         }
 
+        /// <summary>
+        /// update label on the screen
+        /// </summary>
         public void updateScreen()
         {
             lblPlayerRubisCoin.Text = Players[currentPlayerId].Coins[0].ToString();
@@ -632,6 +642,11 @@ namespace Splendor
             //Don't used
         }
 
+        /// <summary>
+        /// Reset the coins who choose the player
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cmdResetChoice_Click(object sender, EventArgs e)
         {
             
@@ -640,8 +655,6 @@ namespace Splendor
             {
                 availableCoins[i] += nbCoinsSelected[0];
             }
-
-            updateScreen();
 
             resetChoice();
 
@@ -655,6 +668,9 @@ namespace Splendor
 
         }
 
+        /// <summary>
+        /// reset the inventory
+        /// </summary>
         public void resetChoice()
         {
             for (int i = 0; i < Enum.GetValues(typeof(Ressources)).Length; i++)
@@ -676,6 +692,11 @@ namespace Splendor
             lblChoiceDiamand.Visible = false;
         }
 
+        /// <summary>
+        /// when the player close the form reset all coins 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void frmSplendor_FormClosing(object sender, FormClosingEventArgs e)
         {
             conn.deleteCoins();
