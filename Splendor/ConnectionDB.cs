@@ -10,11 +10,9 @@ namespace Splendor
 {
     /// <summary>
     /// contains methods and attributes to connect and deal with the database
-    /// TO DO : le modèle de données n'est pas super, à revoir!!!!
     /// </summary>
     class ConnectionDB
     {
-
         //connection to the database
         private SQLiteConnection m_dbConnection;
 
@@ -28,14 +26,11 @@ namespace Splendor
             return System.IO.File.Exists(fileName);
         }
 
-
-
         /// <summary>
         /// constructor : creates the connection to the database SQLite
         /// </summary>
         public ConnectionDB()
         {
-
             //if BDD exist do not create Table and insert data
             if (Exist("Splendor.sqlite"))
             {
@@ -64,12 +59,7 @@ namespace Splendor
                 //Create and insert nbCoin
                 CreateInsertNbCoin();
             }
-
-
         }
-
-
-
 
         /// <summary>
         /// Exectute SQL request
@@ -81,34 +71,20 @@ namespace Splendor
             command.ExecuteNonQuery();
         }
 
-
         /// <summary>
         /// get the list of cards according to the level
         /// </summary>
         /// <returns>cards stack</returns>
         public Stack<Card> GetListCardAccordingToLevel(int level)
         {
-            //Get all the data from card table selecting them according to the data
             string sql = "select idCard, fkRessource, level, nbPtPrestige from Card where level = " + level;
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader cardReader = command.ExecuteReader();
             
-
-
-
-            
-            //Create an object "Stack of Card"
             Stack<Card> listCard = new Stack<Card>();
-            //push pop
 
-            //do while to go to every record of the card table
-            //while (....)
-            //{
-            //Get the ressourceid and the number of prestige points
-            //Create a card object
             while (cardReader.Read())
             {
-
                 Card card = new Card();
                 card.Ress = (Ressources)cardReader["fkRessource"] - 1;
                 card.PrestigePt = (int)cardReader["nbPtPrestige"];
@@ -123,26 +99,8 @@ namespace Splendor
                 {
                     card.Cout[(int)CostReader["fkRessource"]-1] = (int)CostReader["nbRessource"];
                 }
-
                 listCard.Push(card);
             }
-
-
-
-            //select the cost of the card : look at the cost table (and other)
-           
-            //do while to go to every record of the card table
-            //while (....)
-            //{
-            //get the nbRessource of the cost
-            //}
-            //push card into the stack
-
-            //}
-
-    
-
-
             return listCard;
         }
 
@@ -151,7 +109,9 @@ namespace Splendor
         /// </summary>
         private void CreateInsertPlayer()
         {
+            //create table of players
             doSqlRequest("CREATE TABLE player (idPlayer INT PRIMARY KEY, pseudo VARCHAR(20))");
+            //Insert players
             doSqlRequest("insert into player(idPlayer, pseudo) values(0, 'Fred')");
             doSqlRequest("insert into player (idPlayer, pseudo) values (1, 'Harry')");
             doSqlRequest("insert into player (idPlayer, pseudo) values (2, 'Sam')");
@@ -168,15 +128,14 @@ namespace Splendor
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
             
-
             string name = "";
             while (reader.Read())
             {   
                 name = reader["pseudo"].ToString();
-               
             }
             return name;
         }
+
         /// <summary>
         /// get the coins of the player by id
         /// </summary>
@@ -185,8 +144,6 @@ namespace Splendor
             string sql = "select fkRessource, nbCoin from NbCoin where fkPlayer = " + id;
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
-
-           // Console.WriteLine(reader["fkRessource"]);
 
             int[] Coins = new int[5];
             int CoinsPlayer = 0;
@@ -203,12 +160,11 @@ namespace Splendor
                 catch
                 {
                     throw new IndexOutOfRangeException("index en dehors des limites");
-                }
-                                   
+                }           
             }
-
             return Coins;
         }
+
         /// <summary>
         /// Insert the coins of a player into database
         /// </summary>
@@ -223,8 +179,9 @@ namespace Splendor
         /// </summary>
         private void CreateInsertRessources()
         {
-            //Crate Table
+            //Create Ressource table
             doSqlRequest("CREATE TABLE Ressource (idRessource INT PRIMARY KEY, name varchar(20))");
+            //Insert Ressource
             doSqlRequest("Insert Into Ressource (idRessource, name) values(1, 'Ruby')");
             doSqlRequest("Insert Into Ressource (idRessource, name) values(2, 'Emeraude')");
             doSqlRequest("Insert Into Ressource (idRessource, name) values(3, 'Onyx')");
@@ -240,7 +197,6 @@ namespace Splendor
             doSqlRequest("DELETE FROM NBCoin");
         }
 
-
         /// <summary>
         ///  create table "cards", "cost" and insert data
         /// </summary>
@@ -251,6 +207,7 @@ namespace Splendor
 
             //Insert data to DB
             {
+                //Cards level 4
                 doSqlRequest("insert into card(idcard, level, nbPtPrestige) values (2,4,3)");
                 doSqlRequest("insert into card(idcard, level, nbPtPrestige) values (3,4,3)");
                 doSqlRequest("insert into card(idcard, level, nbPtPrestige) values (4,4,3)");
@@ -261,6 +218,8 @@ namespace Splendor
                 doSqlRequest("insert into card(idcard, level, nbPtPrestige) values (9,4,3)");
                 doSqlRequest("insert into card(idcard, level, nbPtPrestige) values (10,4,3)");
                 doSqlRequest("insert into card(idcard, level, nbPtPrestige) values (11,4,3)");
+
+                //Cards level 3
                 doSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (12, 4,3,5)");
                 doSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (13, 3,3,5)");
                 doSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (14, 2,3,3)");
@@ -281,6 +240,8 @@ namespace Splendor
                 doSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (29, 1,3,5)");
                 doSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (30, 5,3,4)");
                 doSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (31, 3,3,3)");
+
+                //Cards level 2
                 doSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (32, 5,2,2)");
                 doSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (33, 1,2,1)");
                 doSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (34, 5,2,1)");
@@ -311,6 +272,8 @@ namespace Splendor
                 doSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (59, 5,2,2)");
                 doSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (60, 2,2,3)");
                 doSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (61, 3,2,3)");
+
+                //Cards level 1
                 doSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (62, 3,1,0)");
                 doSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (63, 2,1,0)");
                 doSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (64, 1,1,0)");
@@ -351,10 +314,8 @@ namespace Splendor
                 doSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (99, 2,1,0)");
                 doSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (100, 2,1,0)");
                 doSqlRequest("insert into card(idcard, fkRessource, level, nbPtPrestige) values (101, 2,1,1)");
-
             }
         }
-
 
         /// <summary>
         /// Create table "NBCoin"
@@ -374,6 +335,7 @@ namespace Splendor
 
             //insert data to DB
             {
+                //fkRessource = 1
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(3, 1, 4)");
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(6, 1, 4)");
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(7, 1, 3)");
@@ -423,6 +385,7 @@ namespace Splendor
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(98, 1, 2)");
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(100, 1, 1)");
 
+                //fkRessource = 2
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(2, 2, 4)");
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(3, 2, 4)");
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(8, 2, 3)");
@@ -472,7 +435,7 @@ namespace Splendor
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(93, 2, 3)");
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(95, 2, 1)");
 
-
+                //fkRessource = 3
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(4, 3, 3)");
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(5, 3, 4)");
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(6, 3, 4)");
@@ -521,7 +484,7 @@ namespace Splendor
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(97, 3, 1)");
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(100, 3, 2)");
 
-
+                //fkRessource = 4
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(2, 4, 4)");
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(4, 4, 3)");
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(8, 4, 3)");
@@ -572,9 +535,7 @@ namespace Splendor
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(100, 4, 1)");
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(101, 4, 4)");
 
-
-
-
+                //fkRessource = 5
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(4, 5, 3)");
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(5, 5, 4)");
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(7, 5, 3)");
@@ -624,8 +585,6 @@ namespace Splendor
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(99, 5, 2)");
                 doSqlRequest("Insert into Cost(fkCard, fkRessource, nbRessource) values(100, 5, 1)");
             }
-
         }
-
     }
 }
