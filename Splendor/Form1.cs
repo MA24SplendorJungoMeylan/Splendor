@@ -185,6 +185,7 @@ namespace Splendor
 
             int[] coutCarte = new int[5]; //tableau qui répertorie le cout d'une carte
             int nbCoinsLost = 0;
+            int coinsNeed = 0;
             bool canBuy = true;
             string[] informations = txtBox.Text.Split('\t');//information de la carte
             string ressource = informations[0]; //ressource de la carte
@@ -217,13 +218,13 @@ namespace Splendor
                         case "Rubis":
                             coutCarte[0] = ressQuantity;
                             break;
-                        case "Emeraude":
+                        case "Saphir":
                             coutCarte[1] = ressQuantity;
                             break;
                         case "Onyx":
                             coutCarte[2] = ressQuantity;
                             break;
-                        case "Saphir":
+                        case "Emeraude":
                             coutCarte[3] = ressQuantity;
                             break;
                         case "Diamand":
@@ -238,26 +239,30 @@ namespace Splendor
             //Est-ce que le joueur à assez de ressource pour acheter la carte
             for (int i = 0; i < coutCarte.Length; i++)
             {
-                coutCarte[i] -= Players[currentPlayerId].Ressources[i];
-                coutCarte[i] -= Players[currentPlayerId].Coins[i];
+                coinsNeed = coutCarte[i];
+                coinsNeed -= Players[currentPlayerId].Ressources[i];
+                coinsNeed -= Players[currentPlayerId].Coins[i];
 
                 //le joueur n'a pas assez de ressources pour acheter la carte
-                if(coutCarte[i] > 0)
+                if(coinsNeed > 0)
                 { 
                     canBuy = false;
+                    break;
                 }
             }
 
             //le joueur a assez de ressources
             if(canBuy)
             {
-                //retire les coins du joueur 
+                //remove coins from player inventory
                 for (int i = 0; i < coutCarte.Length; i++)
                 {
                     nbCoinsLost = (coutCarte[i] - Players[currentPlayerId].Ressources[i]);
                     Players[currentPlayerId].Coins[i] -= nbCoinsLost;
                     availableCoins[i] += nbCoinsLost;
                     conn.BackPlayerCoins(currentPlayerId, i, -1*nbCoinsLost);
+
+                   
                 }
 
                 switch (ressource)
@@ -279,19 +284,27 @@ namespace Splendor
                         break;
                 }
 
-                updatePlayerRessources();
+               
 
                 //ajoute les pts de prestige de la carte au joueur
                 try
                 {
                     int ptPrestige = System.Convert.ToInt32(ptPrestigeString);
                     Players[currentPlayerId].PtPrestige += ptPrestige; 
+
+
+                    //a player win
+                    if(ptPrestige >= 15)
+                    {
+                        MessageBox.Show(Players[currentPlayerId].Name + " a gagné");
+
+                    }
                 }
                 catch
                 {
 
                 }
-
+                
                 //empty the txtBox
                 txtBox.Text = "";
                 fillCards();
@@ -299,20 +312,15 @@ namespace Splendor
             else
             {
                 MessageBox.Show("Vous n'avez pas assez pour cette carte");
-            }        
+            }
+
+            updateScreen();
         }
 
         /// <summary>
         /// Update the ressources textBox of a player
         /// </summary>
-        public void updatePlayerRessources()
-        {
-            txtPlayerRubisCard.Text = Players[currentPlayerId].Ressources[0].ToString();
-            txtPlayerEmeraudeCard.Text = Players[currentPlayerId].Ressources[1].ToString();
-            txtPlayerOnyxCard.Text = Players[currentPlayerId].Ressources[2].ToString();
-            txtPlayerSaphirCard.Text = Players[currentPlayerId].Ressources[3].ToString();
-            txtPlayerDiamandCard.Text = Players[currentPlayerId].Ressources[4].ToString();  
-        }
+      
 
         /// <summary>
         /// click on the play button
@@ -527,13 +535,8 @@ namespace Splendor
             }
 
             Players[currentPlayerId].Coins = playerCoins;
-
-            //Show PlayerCoins
-            lblPlayerRubisCoin.Text = Players[currentPlayerId].Coins[0].ToString();
-            lblPlayerSaphirCoin.Text = Players[currentPlayerId].Coins[1].ToString();
-            lblPlayerOnyxCoin.Text = Players[currentPlayerId].Coins[2].ToString();
-            lblPlayerEmeraudeCoin.Text = Players[currentPlayerId].Coins[3].ToString();
-            lblPlayerDiamandCoin.Text = Players[currentPlayerId].Coins[4].ToString();
+ 
+            updateScreen();
             /*TotPlayerCoins = Convert.ToInt32(lblPlayerRubisCoin.Text) + 9;
             //10 coins max player
            if (TotPlayerCoins == 10)
@@ -577,7 +580,7 @@ namespace Splendor
             //TO DO Get the id of the player : in release 0.1 there are only 3 players
             //Reload the data of the player
             //We are not allowed to click on the next button
-            updatePlayerRessources();
+            updateScreen();
             resetChoice();
 
             cmdResetChoice.Enabled = true;
@@ -589,15 +592,39 @@ namespace Splendor
             lblPlayer.Text = "Jeu de " + Players[currentPlayerId].Name;
             Console.WriteLine("Joueur suivant, id joueur : " + Players[currentPlayerId].Id);
 
-            //Show PlayerCoins
+            updateScreen();
+
+            //label choice invisible
+            lblChoice();
+        }
+
+        public void updateScreen()
+        {
             lblPlayerRubisCoin.Text = Players[currentPlayerId].Coins[0].ToString();
             lblPlayerSaphirCoin.Text = Players[currentPlayerId].Coins[1].ToString();
             lblPlayerOnyxCoin.Text = Players[currentPlayerId].Coins[2].ToString();
             lblPlayerEmeraudeCoin.Text = Players[currentPlayerId].Coins[3].ToString();
             lblPlayerDiamandCoin.Text = Players[currentPlayerId].Coins[4].ToString();
 
-            //label choice invisible
-            lblChoice();
+            lblRubisCoin.Text = availableCoins[0].ToString();
+            lblSaphirCoin.Text = availableCoins[1].ToString();
+            lblOnyxCoin.Text = availableCoins[2].ToString();
+            lblEmeraudeCoin.Text = availableCoins[3].ToString();
+            lblDiamandCoin.Text = availableCoins[4].ToString();
+
+            lblChoiceRubis.Text = nbCoinsSelected[0].ToString();
+            lblChoiceSaphir.Text = nbCoinsSelected[1].ToString();
+            lblChoiceOnyx.Text = nbCoinsSelected[2].ToString();
+            lblChoiceEmeraude.Text = nbCoinsSelected[3].ToString();
+            lblChoiceDiamand.Text = nbCoinsSelected[4].ToString();
+
+            txtPlayerRubisCard.Text = Players[currentPlayerId].Ressources[0].ToString();
+            txtPlayerSaphirCard.Text = Players[currentPlayerId].Ressources[1].ToString();
+            txtPlayerOnyxCard.Text = Players[currentPlayerId].Ressources[2].ToString();
+            txtPlayerEmeraudeCard.Text = Players[currentPlayerId].Ressources[3].ToString();
+            txtPlayerDiamandCard.Text = Players[currentPlayerId].Ressources[4].ToString();
+
+            lblNbPtPrestige.Text = "Nb Pt Prestige : " + Players[currentPlayerId].PtPrestige;
         }
 
         private void lblChoiceRubis_Click(object sender, EventArgs e)
@@ -614,20 +641,11 @@ namespace Splendor
                 availableCoins[i] += nbCoinsSelected[0];
             }
 
-            //Reset label
-            lblRubisCoin.Text = availableCoins[0].ToString();
-            lblSaphirCoin.Text = availableCoins[1].ToString();
-            lblOnyxCoin.Text = availableCoins[2].ToString();
-            lblEmeraudeCoin.Text = availableCoins[3].ToString();
-            lblDiamandCoin.Text = availableCoins[4].ToString();
+            updateScreen();
 
             resetChoice();
 
-            lblChoiceRubis.Text = nbCoinsSelected[0].ToString();
-            lblChoiceSaphir.Text = nbCoinsSelected[1].ToString();
-            lblChoiceOnyx.Text = nbCoinsSelected[2].ToString();
-            lblChoiceEmeraude.Text = nbCoinsSelected[3].ToString();
-            lblChoiceDiamand.Text = nbCoinsSelected[4].ToString();
+            updateScreen();
 
             //Reset threeCoins
             threeCoins = 0;

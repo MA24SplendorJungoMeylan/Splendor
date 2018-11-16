@@ -14,8 +14,8 @@ namespace Splendor
     {
         private string name;
         private int id;
-        private int[] ressources;
-        private int[] coins;
+        private int[] ressources = {0,0,0,0,0};
+        private int[] coins = {0,0,0,0,0};
         private int ptPrestige;
 
         public int PtPrestige
