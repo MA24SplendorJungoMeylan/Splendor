@@ -675,6 +675,7 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "frmSplendor";
             this.Text = "Splendor";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmSplendor_FormClosing);
             this.Load += new System.EventHandler(this.frmSplendor_Load);
             this.flwCardLevel1.ResumeLayout(false);
             this.flwCardLevel1.PerformLayout();

@@ -210,7 +210,7 @@ namespace Splendor
             return Coins;
         }
         /// <summary>
-        /// Insert the coins of a player 
+        /// Insert the coins of a player into database
         /// </summary>
         public void BackPlayerCoins(int id, int res, int nbCoins)
         {
@@ -232,6 +232,13 @@ namespace Splendor
             doSqlRequest("Insert Into Ressource (idRessource, name) values(5, 'Diamant')");
         }
 
+        /// <summary>
+        /// delete the coins of each player  
+        /// </summary>
+        public void deleteCoins()
+        {
+            doSqlRequest("DELETE FROM NBCoin");
+        }
 
 
         /// <summary>
