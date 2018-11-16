@@ -68,17 +68,13 @@ namespace Splendor
         /// <summary>
         /// loads the form and initialize data in it
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void frmSplendor_Load(object sender, EventArgs e)
+        /// <param name="sender"> </param>
+        /// <param name="e"> </param>
+        public void frmSplendor_Load(object sender, EventArgs e)
         {
             lblGoldCoin.Text = "5";
 
-            lblDiamandCoin.Text = availableCoins[4].ToString();
-            lblEmeraudeCoin.Text = availableCoins[3].ToString();
-            lblOnyxCoin.Text = availableCoins[2].ToString();
-            lblRubisCoin.Text = availableCoins[1].ToString();
-            lblSaphirCoin.Text = availableCoins[0].ToString();
+            updateScreen();
 
             //loads cards from database
             listCardOne = conn.GetListCardAccordingToLevel(1);
@@ -169,11 +165,11 @@ namespace Splendor
         }
 
         /// <summary>
-        /// Separates the elements of one card and check if the player can buy the card. 
+        /// Separates the elements of one card and check if the player can buy the card.
         /// </summary>
-        /// <param name="sender"> textbox of the card</param>
+        /// <param name="sender">textbox of a card </param>
         /// <param name="e"></param>
-        private void ClickOnCard(object sender, EventArgs e)
+        public void ClickOnCard(object sender, EventArgs e)
         {
             //We get the value on the card and we split it to get all the values we need (number of prestige points and ressource)
             //Enable the button "Validate"
@@ -316,18 +312,13 @@ namespace Splendor
 
             updateScreen();
         }
-
-        /// <summary>
-        /// Update the ressources textBox of a player
-        /// </summary>
       
-
         /// <summary>
         /// the player click on the "Play" button and start the game
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cmdPlay_Click(object sender, EventArgs e)
+        public void cmdPlay_Click(object sender, EventArgs e)
         {
             this.Width = 680;
             this.Height = 780;
@@ -349,12 +340,11 @@ namespace Splendor
 
         }
 
-
         /// <summary>
         /// load data about the current player
         /// </summary>
         /// <param name="id">identifier of the player</param>
-        private void LoadPlayer(int id) { 
+        public void LoadPlayer(int id) { 
 
             enableClicLabel = true;
 
@@ -387,7 +377,7 @@ namespace Splendor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void lblRubisCoin_Click(object sender, EventArgs e)
+        public void lblRubisCoin_Click(object sender, EventArgs e)
         {
             if (enableClicLabel)
             {
@@ -400,7 +390,7 @@ namespace Splendor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void lblSaphirCoin_Click(object sender, EventArgs e)
+        public void lblSaphirCoin_Click(object sender, EventArgs e)
         {
             if (enableClicLabel)
             {
@@ -413,7 +403,7 @@ namespace Splendor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void lblOnyxCoin_Click(object sender, EventArgs e)
+        public void lblOnyxCoin_Click(object sender, EventArgs e)
         {
             if (enableClicLabel)
             {
@@ -426,7 +416,7 @@ namespace Splendor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void lblEmeraudeCoin_Click(object sender, EventArgs e)
+        public void lblEmeraudeCoin_Click(object sender, EventArgs e)
         {
             if (enableClicLabel)
             {
@@ -439,7 +429,7 @@ namespace Splendor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void lblDiamandCoin_Click(object sender, EventArgs e)
+        public void lblDiamandCoin_Click(object sender, EventArgs e)
         {
             if (enableClicLabel)
             {
@@ -508,7 +498,7 @@ namespace Splendor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cmdValidateChoice_Click(object sender, EventArgs e)
+        public void cmdValidateChoice_Click(object sender, EventArgs e)
         {
             //PlayerCoins var for Show and Back to BD
             int PlayerRubisCoin = 0;
@@ -571,7 +561,7 @@ namespace Splendor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cmdInsertPlayer_Click(object sender, EventArgs e)
+        public void cmdInsertPlayer_Click(object sender, EventArgs e)
         {
             MessageBox.Show("A implémenter !");
         }
@@ -581,7 +571,7 @@ namespace Splendor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cmdNextPlayer_Click(object sender, EventArgs e)
+        public void cmdNextPlayer_Click(object sender, EventArgs e)
         {
             //TO DO in release 1.0 : 3 is hard coded (number of players for the game), it shouldn't. 
             //TO DO Get the id of the player : in release 0.1 there are only 3 players
@@ -635,19 +625,14 @@ namespace Splendor
             txtPlayerDiamandCard.Text = Players[currentPlayerId].Ressources[4].ToString();
 
             lblNbPtPrestige.Text = "Nb Pt Prestige : " + Players[currentPlayerId].PtPrestige;
-        }
-
-        private void lblChoiceRubis_Click(object sender, EventArgs e)
-        {
-            //Don't used
-        }
+        } 
 
         /// <summary>
         /// Reset the coins who choose the player
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cmdResetChoice_Click(object sender, EventArgs e)
+        public void cmdResetChoice_Click(object sender, EventArgs e)
         {
             
 
@@ -697,7 +682,7 @@ namespace Splendor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void frmSplendor_FormClosing(object sender, FormClosingEventArgs e)
+        public void frmSplendor_FormClosing(object sender, FormClosingEventArgs e)
         {
             conn.deleteCoins();
         }
